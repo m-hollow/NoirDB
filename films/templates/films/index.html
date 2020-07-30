@@ -3,22 +3,10 @@
 
 {% block page_header %}
   <div class="jumbotron pt-5 pb-5">
-    <h1 class="display-3">The Film Noir Movie Database.</h1>
+    <h1 class="display-3">NoirDB</h1>
+    <h1 class="display-4">An Interactive Film Noir Database.</h1>
 
-    <p class="lead">A database of 581 Film Noirs from the Classic American Period, 1941 - 1958.</p>
-
-    {% if not user.is_authenticated %}
-    <h4>Registered Users can:</h4>
-    <ul>
-      <li>Write reviews</li>
-      <li>Mark films as Favorites</li>
-      <li>Create a Watchlist</li>
-      <li>Track your progess through all 581 film noirs!</li>
-    </ul>
-
-    <a class="btn btn-outline-dark" href="{% url 'users:register' %}" role="button">Register Now &raquo;</a>
-    {% endif %}
-
+    <p class="lead">NoirDB includes 581 Film Noirs from the Classic American Period, 1941 - 1958.</p>
   </div>
 
 {% endblock page_header %}
@@ -26,22 +14,37 @@
 {% block content %}
 
 {% if user.is_authenticated %}
+
   <div class="container mt-4">
     <h5>Welcome back, {{ user.username }}.</h5>
       <ul>
         <li>Check out your <a href="{{ user.get_absolute_url }}">user details</a> here.<small><i>...or just click the 'hello user' text up top at any time!</i></small></li>
         <li>Feeling lucky? Get a few <a href="{% url 'films:get_recommendations' %}">recommendations.</a><i> (We won't pick something you've seen)</i></li>
-        <li>Rating and Reviewing films helps our database grow and become more useful... So get to work!</li>
       </ul>
   </div>
+
 {% else %}
-  <div class="container mt-4">
-    <h5>Welcome to FNDB!</h5>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-6">
+      <h5>Welcome, visitor!</h5>
+        <ul>
+          <li>If you have an account, please <a href="{% url 'users:login' %}">login here</a>.</li>
+          <li>Looking for a particular film or person? Use the <b>Search</b> field up above.</li>
+        </ul>
+    </div>
+    <div class="col-6"> 
+    <h5>Registered Users can:</h5>
       <ul>
-        <li>If you have an account, please <a href="{% url 'users:login' %}">login here</a>.</li>
-        <li>Otherwise, register today!</li>
+        <li>Write reviews and get recommendations.</li>
+        <li>Mark films as Seen, Favorite, or add them to your Watchlist.</li>
+        <li>Track your progess through all 581 film noirs!</li>
       </ul>
+    <a class="btn btn-outline-dark float-right" href="{% url 'users:register' %}" role="button">Register Now &raquo;</a>
+    </div>
   </div>
-  
+</div>
+
 {% endif %}
+
 {% endblock content %}

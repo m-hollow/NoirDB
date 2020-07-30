@@ -19,7 +19,7 @@
         <i class="far fa-star fa-sm"></i>
       {% endfor %}
     {% endwith %}
-      &nbsp;&nbsp;<small>{{ review.date_added|date:'M d, Y H:i' }} by {{ review.user.username }}</small>
+      &nbsp;&nbsp;<small><b>{{ review.movie.display_name }}</b> - {{ review.date_added|date:'M d, Y H:i' }} by {{ review.user.username }}</small>
   </h4>
   <div class="card-body">
     {{ review.review_text|linebreaks }}

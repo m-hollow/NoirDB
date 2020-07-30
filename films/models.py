@@ -47,6 +47,7 @@ class Person(models.Model):
 class Movie(models.Model):
     """A movie in the database"""
     name = models.CharField(max_length=150)
+    display_name = models.CharField(max_length=150, null=True)
     year = models.PositiveIntegerField(null=True)
     release_date = models.CharField(max_length=200, null=True)
     studio = models.CharField(max_length=100, default='', blank=True) # are these default empty strings really necessary ?
@@ -92,6 +93,14 @@ class Movie(models.Model):
 
         #old, pre-slug version:
         #return reverse('films:movie', args=[str(self.id)])
+
+    def get_display_name(self):
+        """This is handled by db populator script, but I have this hear in case I need to run it via shell"""
+        if '(' in self.name:
+            display_name = self.name.split('(')[0].strip() # remove (year) from title, for display purposes.
+            return display_name
+        else:
+            return self.name
 
     def update_review_details(self):
         """Queries Review table to get all reviews of current movie object, then updates num_reviews and avg_rating"""

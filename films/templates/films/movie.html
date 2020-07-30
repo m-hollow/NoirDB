@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block page_header %}
-  <h1>{{ movie.name }}</h1>
+  <h1>{{ movie.display_name }}</h1>
 {% endblock page_header %}
 
 {% block content %}
@@ -40,7 +40,7 @@
         </li>
       </ul>
       <br>
-      <h5>Where to watch <i>{{ movie.name }}</i></h5>
+      <h5>Where to watch <i>{{ movie.display_name }}</i></h5>
       {% if media_links %}
         {% for link in media_links %}
         <ul>
@@ -115,7 +115,7 @@
     {% if user.is_authenticated %}
       <div class="shadow p-3 mb-5 bg-light rounded">
         <div class="mb-2 border-bottom">
-          <h5>Your details for <i>{{ movie.name }}</i></h5>
+          <h5>Your details for <i>{{ movie.display_name }}</i></h5>
         </div>
         {% if not user_movie_details %}
           <p>Adding details allows you to mark this movie as Seen, add it to your Favorites, or add it to your Watch-list.</p>

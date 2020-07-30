@@ -44,7 +44,7 @@
         {% else %}
           <ul>
           {% for entry in uml_watch %}
-            <li><a href="{{ entry.movie.get_absolute_url }}">{{ entry.movie.name }}</a></li>
+            <li><a href="{{ entry.movie.get_absolute_url }}">{{ entry.movie.display_name }}</a></li>
           {% endfor %}
           </ul>
         {% endif %}
@@ -56,7 +56,7 @@
         {% else %}
           <ul>
           {% for entry in uml_favs %}
-            <li><a href="{{ entry.movie.get_absolute_url }}">{{ entry.movie.name }}</a></li>
+            <li><a href="{{ entry.movie.get_absolute_url }}">{{ entry.movie.display_name }}</a></li>
           {% endfor %}
           </ul>
         {% endif %}
@@ -68,7 +68,7 @@
         {% else %}
           <ul>
           {% for entry in uml_seen %}
-            <li><a href="{{ entry.movie.get_absolute_url }}">{{ entry.movie.name }}</a></li>
+            <li><a href="{{ entry.movie.get_absolute_url }}">{{ entry.movie.display_name }}</a></li>
           {% endfor %}
           </ul>
         {% endif %}
@@ -96,7 +96,7 @@
             <img class="star pb-1" src="{% static 'images/star-regular.svg' %}">
           {% endfor %}
         {% endwith %}
-          &nbsp;&nbsp;<small><b>{{ review.movie.name }}</b> - {{ review.date_added|date:'M d, Y' }}</small>
+          &nbsp;&nbsp;<small><b>{{ review.movie.display_name }}</b> - {{ review.date_added|date:'M d, Y' }}</small>
     <a class="btn btn-sm btn-outline-secondary float-right" href="{% url 'films:delete_review' review.id %}" role="button">Delete Review</a>
       </h4>
       <div class="card-body">

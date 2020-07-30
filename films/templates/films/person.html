@@ -20,7 +20,7 @@
       <h4><small>as</small> Performer</h4>
       <ul>
         {% for pair in movie_role_pairs %}
-          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a><span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1 }}</span></li>  
+          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.display_name }}</a><span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1 }}</span></li>  
         {% empty %}
           <li>No cast credits exist for {{ person.name }}</li>
         {% endfor %}
@@ -34,7 +34,7 @@
       <h4><small>as</small> Crew</h4>
       <ul>
         {% for pair in movie_job_pairs %}
-          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a>
+          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.display_name }}</a>
             {% if pair.1|length > 1 %}
               <span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1|join:" | " }}</span>
             {% else %}

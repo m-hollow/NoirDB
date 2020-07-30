@@ -10,7 +10,7 @@
 
   <ul>
   {% for movie in movies %}
-    <li><a href="{{ movie.get_absolute_url }}">{{ movie.name }}</a></li>
+    <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
   {% endfor %}
   </ul>
 

@@ -117,6 +117,11 @@ def add_movie(movie_dict, flog):
     release_date = movie_dict['release date']
     year = get_year(movie_dict['release date'], title, flog)
 
+    if '(' in title:
+        display_name = title.split('(')[0].strip()
+    else:
+        display_name = title
+
     media_links = movie_dict['media_links']
 
     # current implementation of data set, the value of key 'based on' will be either
@@ -144,7 +149,7 @@ def add_movie(movie_dict, flog):
 
     # create the movie record
     try: 
-        movie = Movie(name=title, year=year, release_date=release_date, studio=studio, based_on=based_on)
+        movie = Movie(name=title, display_name=display_name, year=year, release_date=release_date, studio=studio, based_on=based_on)
     except:
         fail_note = 'add_movie - Movie() call, {}'.format(title)
         flog.add_fail(title, fail_note)

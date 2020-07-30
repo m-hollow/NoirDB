@@ -19,7 +19,7 @@
       {% else %}
         <ul>
           {% for result in movie_results %}
-            <li><a href="{{ result.get_absolute_url }}">{{ result.name }}</a></li>
+            <li><a href="{{ result.get_absolute_url }}">{{ result.display_name }}</a></li>
           {% endfor %}
         </ul>
       {% endif %}
