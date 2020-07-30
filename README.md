@@ -1,5 +1,5 @@
-# FNDB_V4
-Film Noir Database Website
+# NOIR-DB
+An Interactive Film Noir Database Website
 
 I created this project in 2020 as a means of learning the Django web framework and full-stack web development, though my primary interests are Python,
 Django and databases. This project is meant to be a snapshot of everything I've learned this year. Film Noir was an easy choice for my first database project,
