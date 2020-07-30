@@ -1,0 +1,7 @@
+__pycache__
+*.pyc
+/static
+media
+ve_fndb4
+.DS_Store
+.env

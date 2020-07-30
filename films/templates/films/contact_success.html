@@ -1,0 +1,14 @@
+{% extends 'films/base.html' %}
+
+{% block page_header %}
+  <h2>Contact Success</h2>
+{% endblock page_header %}
+
+{% block content %}
+  <h5>An e-mail has been sent to the FNDB administrator. Thanks for getting in touch!</h5>
+
+
+  <div class='float-right'>
+    <a class="btn btn-sm btn-outline-dark" href="{% url 'films:index' %}">Return to Main Page</a></div>
+
+{% endblock content %}

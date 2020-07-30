@@ -1,0 +1,22 @@
+{% extends 'films/base.html' %}
+
+{% block page_header %}
+  <h2>Your Recommendations</h2>
+{% endblock page_header %}
+
+{% block content %}
+
+  <p>We picked three movies that you haven't seen (and that aren't already in your Watchlist):</p>
+
+  <ul>
+  {% for movie in movies %}
+    <li><a href="{{ movie.get_absolute_url }}">{{ movie.name }}</a></li>
+  {% endfor %}
+  </ul>
+
+  <br>
+  <div class="mb-1">Don't like these results?</div>
+    <a class="btn btn-outline-dark" role="button" href="{% url 'films:get_recommendations' %}">Get New Results</a>
+
+
+{% endblock content %}

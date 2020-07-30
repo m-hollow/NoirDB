@@ -1,0 +1,26 @@
+{% extends 'films/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page_header %}
+  <h2>Register Account</h2>
+{% endblock page_header %}
+
+
+{% block content %}
+
+  <form method="post" action="{% url 'users:register' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <button class="btn btn-secondary" type="submit">Register</button>
+    <!-- <input type="hidden" name="next" value="{% url 'films:index' %}" /> --> 
+  </form>
+
+{% endblock content %}
+
+<!-- note on above commented-out section, as used in LearningLogs-- I proved that it's redundant and not needed, by commenting it out above; the register view contains code to redirect to films:index, so there is no need for this
+    hidden button that does the same, its behavior is redundant. I have no idea why learninglogs put it there, unless
+    I'm mising something! -->
+
+
+

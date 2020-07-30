@@ -1,0 +1,24 @@
+{% extends 'films/base.html' %}
+
+{% block page_header %}
+  <h2>Deactivate Account</h2>
+{% endblock page_header %}
+
+
+{% block content %}
+  <p>Are you sure you want to close your account?</p>
+    <div class="container">
+      <div class="row">
+        <div class="col-2">
+          <form action="{% url 'users:close_account' user.id user.slug %}" method='post'>
+            {% csrf_token %}
+            <button name='submit' class='btn btn-danger'>Yes, do it!</button>
+          </form>
+        </div>
+        <div class="col-2">
+          <a class="btn btn-secondary float-left" href="{{ user.get_absolute_url }}" role="button">Nevermind...</a>
+        </div>
+      </div>
+    </div>
+
+{% endblock content %}

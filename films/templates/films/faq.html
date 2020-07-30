@@ -1,0 +1,61 @@
+{% extends 'films/base.html' %}
+
+{% block page_header %}
+  <h2>Frequently Asked Questions</h2>
+{% endblock page_header %}
+
+{% block content %}
+  <br>
+  <ul>
+    <li><h5>What is the purpose of this website, and how do I use it?</h5>
+      <ul>
+        <li>While the internet is already full of exhaustive, well-maintained movie databases, we noticed there was nothing that catered specifically to the Film Noir genre and its many fans. Although the movies in this database do show up elsewhere, in the context of FNDB the connections between movies and the people who made them exist solely within the chosen data-set of <b>Film Noir</b> pictures. This makes finding films starring your favorite Noir actors, or made by your favorite Noir directors, much easier: there's no 'non-Noir' content to get in the way of your search.</li>
+        <br>
+        <li>Furthermore, we've made the database interactive, to assist your deep-dive into the Film Noir genre. Assuming you've registered an account, you can mark the films you've seen, add films to a personalized <b>Watch-list</b>, and also keep track of your <b>Favorites</b> as you go. Lastly, users can write <b>Reviews</b> of any movie, including a Five-Star rating system that helps other users see which movies are the most (or least) loved by the community.</li>
+      </ul>
+    </li>
+    <br>
+    <li>
+        <h5>I've clicked 'Seen' and 'Favorite' on a bunch of movies, how do I see my accumulated info?</h5>
+        <ul>
+          <li>Simply click <b>Your Info</b> in the navigation bar, or click the 'Hello <i>(username)</i>' text in the top-center of the screen. Either one will take you to your personal account overview. Note, however, that to remove films from your Watchlist and Favorites list, you need to do it from that film's page itself, not your user page. Generally, there will always be buttons to instruct you.</li>
+        </ul>
+    </li>
+    <br>
+
+    <li>
+        <h5>Why do only some of the movies include links to watch them?</h5>
+        <ul>
+          <li>At the time FNDB was launched, just under 100 of the 581 movies in the database include a verified link to watch the movie. Updating the media links is currently a work in progress, so you should notice more links becoming available in the near future. Meanwhile, there's always Google :)</li>
+        </ul>
+    </li>
+
+    <br>
+
+    <li>
+        <h5>Where is <i>The Third Man</i>? Or <i>Elevator to the Gallows?</i></h5>
+        <ul>
+          <li>A perfectly good question. The simple answer: those movies are British and French, not American. For purposes of practicality, the developer of FNDB had to make a clear decision about the initial data-set to work with. He chose films from what is generally considered 'the classic American period,' which spans 1941 - 1958 in Hollywood, USA. That said, databases are designed to grow, and FNDB is still under active development, so stay tuned!</li>
+        </ul>
+    </li>
+    <br> 
+    <li><h5>Who made this website?</h5></li>
+      <ul>
+        <li>FNDB is the project of Michael Arthur Holloway, who developed this site as a means of learning Python programming, database design and web-development with the Django framework. As a devout aficionado of Film Noir and hardboiled detective fiction, the body of classic Noir films made a fitting choice for his first real-world database project.</li>
+      </ul> 
+    </li>
+    <br>
+    <li>
+      <h5>I have an inquiry about the website. Who do I contact?</h5>
+      <ul>
+        <li>You can send a message to the developer by <a href="{% url 'films:contact' %}">clicking here.</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class='float-right'>
+    <a class="btn btn-sm btn-outline-dark" href="{% url 'films:index' %}">Return to Main Page</a></div>
+
+
+
+{% endblock content %}

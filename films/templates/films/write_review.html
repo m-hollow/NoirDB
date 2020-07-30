@@ -1,0 +1,24 @@
+{% extends 'films/base.html' %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+  <h2>Write a Review of <i>{{ movie.name }}</i></h2>
+{% endblock page_header %}
+
+{% block content %}
+  
+  <form method="post" action="{% url 'films:write_review' movie.name %}" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button class="btn btn-secondary ml-2" type="submit">Publish</button>
+    {% endbuttons %}
+
+  </form>
+
+
+  <div class='float-right'>
+    <a class="btn btn-sm btn-outline-dark" href="{{ movie.get_absolute_url }}"><i>Return to Movie</i></a>
+  </div>
+
+{% endblock content %}

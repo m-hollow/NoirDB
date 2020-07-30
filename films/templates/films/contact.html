@@ -1,0 +1,18 @@
+{% extends 'films/base.html' %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+  <h2>Contact FNDB</h2>
+{% endblock page_header %}
+
+{% block content %}
+
+  <form role="form" action="" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-secondary" type="submit">Send</button>
+  </form>
+
+
+{% endblock content %}

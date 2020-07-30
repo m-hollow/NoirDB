@@ -1,0 +1,74 @@
+{% extends 'films/base.html' %}
+{% load class_tag %}
+
+{% block page_header %}
+  <h2>Search Results for "{{ query }}"</h2>
+{% endblock page_header %}  
+
+{% block content %}
+  <p>Total matches found: {{ count }}</p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-4 mr-5 p-3">      
+      <h4 class="border-bottom"> Movie Results</h4>
+      {% if not movie_results %}
+        <ul>
+          <li>No matching movies found.</li>
+        </ul>
+      {% else %}
+        <ul>
+          {% for result in movie_results %}
+            <li><a href="{{ result.get_absolute_url }}">{{ result.name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+    <div class="col-4 p-3">
+      <h4 class="border-bottom"> People Results</h4>
+      {% if not people_results %}
+        <ul>
+          <li>No matching people found.</li>
+        </ul>
+      {% else %}
+        <ul>
+          {% for result in people_results %}
+            <li><a href="{{ result.get_absolute_url }}">{{ result.name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+ <div class="pagination">
+    <span class="step-links">
+      <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+        <ul class="pagination pagination-sm">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page=1 &q={{ query }}">&laquo;</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ query }}">previous</a></li>
+        {% endif %}
+
+        {% if page_obj.paginator.num_pages > 1 %}
+          {% for i in page_obj.paginator.page_range %}
+            {% if page_obj.number == i %}
+              <li class="page-item active"><a class="page-link" href="?page={{ i }}&q={{ query }}">{{ i }}</a>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ i }}&q={{ query }}">{{ i }}</a>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ query }}">next</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">&raquo;</a></li>
+        {% endif %}
+        </ul>
+    </span>
+  </div>
+
+
+{% endblock content %}

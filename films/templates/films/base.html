@@ -1,0 +1,84 @@
+{% load bootstrap4 %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>FNDB</title>
+
+  {% bootstrap_css %}
+  {% bootstrap_javascript jquery='full' %}
+
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+  <!-- <script src="https://kit.fontawesome.com/42fd0a1543.js" crossorigin="anonymous"></script> -->
+
+</head>
+
+<body>  
+<nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color:#D3D3D3;">
+  <a class="navbar-brand" href="{% url 'films:index' %}">FNDB</a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      {% with url_name=request.resolver_match.url_name %}
+      <li class="nav-item {% if url_name == 'all_movies' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'films:all_movies' %}">All Movies</a>
+      </li>
+      {% if user.is_authenticated %}
+        <li class="nav-item {% if url_name == 'user_detail' %}active{% endif %}">
+          <a class="nav-link" href="{{ user.get_absolute_url }}">Your Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
+        </li>
+      {% else %}
+        <li class="nav-item {% if url_name == 'register' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+        </li>
+        <li class="nav-item {% if url_name == 'login' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
+        </li>
+        {% endif %}
+        <li class="nav-item {% if url_name == 'faq' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'films:faq' %}">FAQ</a>
+        </li>
+      {% endwith %}
+    </ul>
+
+{% if user.is_authenticated %}
+    <ul class="navbar-nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ user.get_absolute_url }}">Hello, {{ user.username }}</a>
+      </li>
+    </ul>
+{% endif %}
+    <div class="navbar-nav ml-auto">
+    <form action="{% url 'films:search_results' %}" method='get' class="form-inline my-2 my-lg-0">
+      <input name='q' class="form-control mr-sm-2" type="text" required placeholder="Search..." aria-label="Search">
+      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    </div>
+  </div>
+</nav>
+
+  <main role="main" class="container">
+    <div class="mb-2 mt-3 border-bottom">
+      {% block page_header %}{% endblock page_header %}
+    </div>
+    <div>
+      {% block content %}{% endblock content %}
+    </div>
+  </main>
+
+</body>
+
+</html>
+
+
