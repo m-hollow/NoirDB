@@ -1,4 +1,4 @@
-# NOIR-DB
+# NoirDB
 An Interactive Film Noir Database Website
 
 I created this project in 2020 as a means of learning the Django web framework and full-stack web development, though my primary interests are Python,
