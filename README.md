@@ -10,7 +10,9 @@ system, and each movie page shows that film's average rating, plus all of its re
 Noirs to watch, and tracking their progress through all the Noirs contained in the database (581 total: the 'classic American period' from 1943 - 1958).
 
 backend: django framework
+
 database used: mysql
+
 front-end composed with html5 / CSS / bootstrap / jQuery
 
 -Michael Arthur Holloway, July 2020
