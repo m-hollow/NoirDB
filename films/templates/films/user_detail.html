@@ -10,7 +10,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-5">
+    <div class="col-lg-5">
       <ul>
         <li>Username:<span class="float-right">{{ user.username }}</span></li>
         <li>E-mail:<span class="float-right">{{ user.email }}</span></li>
@@ -23,10 +23,10 @@
         <p>Would you like a few <a href="{% url 'films:get_recommendations' %}">recommendations</a>?</p>
     </div>
 
-    <div class="col-3">
+    <div class="col-lg-3">
     </div>
 
-    <div class="col-4">
+    <div class="col-lg-4">
       <div class="mb-3"><h4>Edit your Account</h4></div>
         <a class="btn btn-outline-dark btn-sm mb-2" href="{% url 'users:password_change' %}" role="button">Update Password</a>
         <br>
@@ -37,7 +37,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col p-3 m-2 border rounded">
+    <div class="col-lg p-3 m-2 border rounded">
       <h3>Your Watchlist</h3>
         {% if not uml_watch %}
         <p>You don't have any movies in your watchlist.</p>
@@ -49,7 +49,7 @@
           </ul>
         {% endif %}
     </div>
-    <div class="col p-3 m-2 border rounded">
+    <div class="col-lg p-3 m-2 border rounded">
       <h3>Your Favorites</h3>
         {% if not uml_favs %}
         <p>You haven't favorited any movies yet.</p>
@@ -61,7 +61,7 @@
           </ul>
         {% endif %}
     </div>
-    <div class="col p-3 m-2 border rounded">
+    <div class="col-lg p-3 m-2 border rounded">
       <h3>Films You've Seen</h3>
         {% if not uml_seen %}
         <p>You haven't marked any films as Seen.</p>

@@ -34,7 +34,7 @@ urlpatterns = [
 
 
     # creates a record in UserMovieLink table, connecting user to movie
-    path('create_uml/<movie>/', CreateUML.as_view(), name='create_uml'),
+    path('create_uml/<int:pk>/<action>/', CreateUML.as_view(), name='create_uml'),
 
     # one single URL pattern / path for doing any kind of update to UserMovieLink record; captures id of UML object as well as 'action' string
     # the action string is used in the view to determine which action to perform on the object

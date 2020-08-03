@@ -316,9 +316,6 @@ def add_person(person_dict):
 def add_movie_poster(movie_object):
     """find and update the image field for a single movie object"""
 
-    # this references directories on my local system. but, I'll need to run this to populate my db with
-    # images once deployed to a server; how will I tell this function where to look to find them?
-
     all_image_files = os.listdir('films/image_downloads/') # simply lists names of the files, as strings
 
     movie_name = movie_object.name

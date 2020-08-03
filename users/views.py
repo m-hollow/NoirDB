@@ -28,6 +28,11 @@ class RegisterView(CreateView):
         # to see another approach to writing form_valid with additional operations.
 
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_name'] = 'Register Account'
+        return context
+
 class CloseAccount(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = get_user_model()
     template_name = 'registration/close_account.html'
@@ -48,6 +53,11 @@ class CloseAccount(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         form.instance.is_active = False
 
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_name'] = 'Close Account'
+        return context
 
     # the alternative is to not make this a part of an UpdateView nor an (invisible) From at all,
     # and simply modify this value in a DetailView with this code (but what method of DetailView would it go in??):

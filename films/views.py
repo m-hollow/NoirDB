@@ -31,6 +31,11 @@ class MovieList(ListView):
     template_name = 'films/all_movies.html'
     context_object_name = 'all_movies'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_name'] = 'All Movies'
+        return context
+
 
 class MovieDetail(DetailView):
     model = Movie
@@ -136,6 +141,7 @@ class MovieDetail(DetailView):
         context['user_review'] = user_review       # value is Review object or None
         context['user_movie_details'] = user_movie_details  # value is UserMovieLink object or None
         context['actions'] = action_dict
+        context['page_name'] = self.object.display_name
 
         return context 
 
@@ -187,6 +193,7 @@ class PersonDetail(DetailView):
 
         context['movie_role_pairs'] = movie_role_pairs
         context['movie_job_pairs'] = movie_job_pairs
+        context['page_name'] = self.object.name
         return context
 
 
@@ -237,6 +244,7 @@ class SearchResults(ListView):
 
         context['movie_results'] = movie_results
         context['people_results'] = people_results
+        context['page_name'] = 'Search Results'
 
         return context
 
@@ -303,6 +311,7 @@ class UserDetail(LoginRequiredMixin, DetailView): # I'm assuming this mixin work
 
         context['user_reviews'] = user_reviews
         context['actions'] = action_dict
+        context['page_name'] = 'User Details'
 
         return context
 
@@ -335,6 +344,7 @@ class WriteReview(LoginRequiredMixin, CreateView):
         movie = Movie.objects.get(name=self.kwargs['movie'])
 
         context['movie'] = movie
+        context['page_name'] = 'Write Review'
 
         return context
 
@@ -353,8 +363,14 @@ class DeleteReview(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('films:user_detail', kwargs={'pk': self.request.user.id, 'slug': self.request.user.slug }) # I don't think there's any need for this to be lazy?
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_name'] = 'Delete Review'
+        return context
+
 
 class CreateUML(LoginRequiredMixin, CreateView):
+    """Create the UML object and set its initial settings"""
 
     model = UserMovieLink
     fields = [] # we are setting them all behind the scenes in form_valid; still, we must include this or the view won't work.
@@ -362,34 +378,48 @@ class CreateUML(LoginRequiredMixin, CreateView):
     login_url = 'users:login' # will be used by the LoginRequiredMixin if non-logged in user tries access
 
     def form_valid(self, form):
-        # get the movie object via name captured from URLconf, packed in kwargs, stored in self (of this view instance)
-        movie = Movie.objects.get(name=self.kwargs['movie'])
+        # get the movie object via id captured from URLconf, packed in kwargs, stored in self (of this view instance)
+        movie = Movie.objects.get(id=self.kwargs['pk'])
 
         form.instance.user = self.request.user
         form.instance.movie = movie
+
+        if self.kwargs['action'] == 'mark_seen':
+            form.instance.seen = True
+        elif self.kwargs['action'] == 'mark_favorite':
+            form.instance.favorite = True
+            form.instance.seen = True
+        elif self.kwargs['action'] == 'mark_watch_list':
+            form.instance.watch_list = True
         
         return super().form_valid(form)
 
     def get_success_url(self):
-        # this will use the movie objects get_absolute_url method
-        # return redirect(movie)    # NOTE: this didn't work! but I'm not sure why it failed. error read:
-        # "Reverse for 'films.views.movie' not found. 'films.views.movie' is not a valid view function or pattern name."
-        
-        # DUH: the movie object is only retrieved in the form_valid METHOD, not in THIS method. it had no
-        # idea what 'movie' was. you either have to query it again in this method, or query it as an attribute
-        # assignment on the class, so it can be used in these methods.
 
         return reverse('films:movie', kwargs={'pk': self.object.movie.id, 'slug': self.object.movie.slug })
 
 
 class UpdateUML(LoginRequiredMixin, UpdateView):
-    """the logic in the form_valid method: could you move this to a method in the UML model itself? or would that require"""
-    # a bunch of additional code to process the Form, thereby failing to leverage the power of the UpdateView ?
-
+    """Update the UMl based on action keyword"""
     model = UserMovieLink
     fields = []
 
     login_url = 'users:login'
+
+    # one approach to getting rid of 'add details', but not the one I'm using
+    # def get_object(self):
+    #     """Override get object in case UML object doesn't exist yet, and if not, create one"""
+
+    #     movie = Movie.objects.get(name=self.kwargs['movie'])
+    #     user = self.request.user
+
+    #     if UserMovieLink.objects.filter(movie=movie, user=user).exists():
+    #         obj = UserMovieLink.objects.get(movie=movie, user=user)
+    #     else:
+    #         obj = UserMovieLink(movie=movie, user=user)
+    #         obj.save()
+
+    #     return obj
 
     def form_valid(self, form):
 
@@ -443,9 +473,19 @@ class GetRecommendations(LoginRequiredMixin, ListView):
         
         return three_chosen
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_name'] = 'Recommendations'
+        return context
+
+
 class FaqView(TemplateView):
     template_name = 'films/faq.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_name'] = 'FAQ'
+        return context
 
 def contactView(request):
     if request.method == 'GET':
@@ -466,6 +506,7 @@ def contactView(request):
 
 class ContactSuccessView(TemplateView):
     template_name = 'films/contact_success.html'
+
 
 
 

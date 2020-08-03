@@ -6,13 +6,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>NoirDB</title>
+  <title>NoirDB 
+  {% if page_name %} - {{ page_name }}{% endif %}
+  </title>
 
   {% bootstrap_css %}
   {% bootstrap_javascript jquery='full' %}
 
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  
+
 </head>
 
 <body>  

@@ -10,7 +10,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-6">
+    <div class="col-lg-6">
 
       {% if movie.poster_image %}
         <figure class="figure">
@@ -60,11 +60,11 @@
       {% endif %}
     </div>
 
-    <div class="col-6">
-      <h3>Cast & Crew</h3>
+    <div class="col-lg-6">
+<!--       <h3>Cast & Crew</h3> -->
 
-      <ul>  
-        <li><p>Crew:</p>
+      <!-- <ul> -->  
+       <!--  <li> --><p class="lead">Crew:</p>
 
           <uL>
             <li>Director: <a href="{{ crew_dict.director.get_absolute_url }}"><span class="float-right">{{ crew_dict.director.name }}</span></a></li>
@@ -97,9 +97,9 @@
           {% endif %}
   
 
-        </li>
+<!--         </li> -->
 
-        <li><p>Cast:</p>
+<!--         <li> --><p class="lead">Cast:</p>
           <ul>
           {% for pair in cast_list %}
             <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a> <span class="float-right">&nbsp;<small><i>as</i></small> {{ pair.1 }}</span></li>
@@ -107,8 +107,8 @@
             <li>No cast credits have been entered for this movie.</li>
           {% endfor %}
           </ul>
-        </li>
-      </ul>
+<!--         </li>
+      </ul> -->
 
     <br>
     <br>
@@ -118,13 +118,26 @@
           <h5>Your details for <i>{{ movie.display_name }}</i></h5>
         </div>
         {% if not user_movie_details %}
-          <p>Adding details allows you to mark this movie as Seen, add it to your Favorites, or add it to your Watch-list.</p>
-          <form action="{% url 'films:create_uml' movie.name %}" method='post'>
-            {% csrf_token %}
-            {{ form.as_p }}
-            {% buttons %}
-              <button name='submit' class='btn btn-outline-dark'>Add Details</button>
-            {% endbuttons %}
+          <ul>
+            <li class="mb-2">
+              <form action="{% url 'films:create_uml' movie.id actions.mark_seen %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Mark as Seen</button>
+              </form>
+            </li>
+            <li class="mb-2">
+              <form action="{% url 'films:create_uml' movie.id actions.mark_favorite %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Favorites</button>
+              </form>
+            </li>
+            <li class="mb-2">
+              <form action="{% url 'films:create_uml' movie.id actions.mark_watch_list %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Watchlist</button>
+              </form>
+            </li>
+          </ul>
         {% else %}
         <ul>
           {% if user_movie_details.seen %}
