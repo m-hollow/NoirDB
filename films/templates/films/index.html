@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-  <div class="jumbotron pt-5 pb-5">
+  <div class="jumbotron pt-4 pb-4 mb-3">
     <h1 class="display-3">NoirDB</h1>
     <h1 class="display-4">An Interactive Film Noir Database.</h1>
 
@@ -13,9 +13,79 @@
 
 {% block content %}
 
+<div class="container">
+  <div class="row pt-3">
+      <div class="col-lg-4">
+        <h2 class="lead">TODAY'S PICK:</h2>
+        <h4><a href="{{ daily_movie.get_absolute_url }}">{{ daily_movie.display_name }}</a></h4>
+        <ul>
+          <li>Released on {{ daily_movie.release_date }}</li>
+          <li>Directed by <a href="{{ daily_director.get_absolute_url }}">{{ daily_director.name }}</a></li>
+          <li>Avg. Rating:
+          {% if daily_movie.avg_rating %}
+            {{ daily_movie.avg_rating }} <small> of 5 stars</small>
+          {% else %}
+            --
+          {% endif %}</li>
+        </ul>
+
+        {% if daily_media_links %}
+          {% for link in daily_media_links %}
+          <ul>
+            <li>Watch at <a href="{{ link.url_link }}">{{ link.host|capfirst }}</a>
+            {% if link.free != True %}
+              <small>&nbsp;&nbsp;&nbsp;(Paid Rental)</small>
+            {% else %}
+              <small>&nbsp;&nbsp;&nbsp;(Free Stream)</small>
+            {% endif %}
+            </li>
+          </ul>
+          {% endfor %}
+        {% endif %}
+
+        <br>
+        {% if related_movies %}
+        <div class="mb-1">
+          <i>See more from </i>{{ daily_director.name }}:
+        </div>
+          <ul>
+          {% for movie in related_movies %}
+            <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+
+      </div>
+      <div class="col-lg-4">
+        <div class="img_box mt-2">
+          <a href="{{ daily_movie.get_absolute_url }}">
+          <img src="{{ daily_movie.poster_image.url }}" class="figure-img img-fluid" alt="{{ daily_movie.name }}">
+          </a>
+            <figcaption class="figure-caption"><i>Original poster art. Copyright held by studio.</i></figcaption>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="p-3 shadow bg-light rounded">
+          <p class="lead border-bottom">THE NOIR-DB <b>TOP FIVE</b>:</p>
+          <ul>
+          {% for movie in top_five %}
+            <li style="list-style-type:none"><span class="lead">{{ forloop.counter }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="{{ movie.get_absolute_url }}"><span class="lead">{{ movie.display_name }}</span></a></li>
+          {% endfor %}
+          </ul>
+        </div>
+        <br>
+        <div class="p-3 border rounded">
+          <p class="lead border-bottom">Looking for <i>Free</i> Streaming Noir?</p>
+          <p> See our list of Films that include links to free streaming by <a href="{% url 'films:free_movies' %}"> clicking here.</a></p>
+          <p>Current Count: <b>{{ free_count }}</b> free films.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% if user.is_authenticated %}
 
-  <div class="container mt-4">
+  <div class="container border-top mt-4 mb-3 pt-3">
     <h5>Welcome back, {{ user.username }}.</h5>
       <ul>
         <li>Check out your <a href="{{ user.get_absolute_url }}">user details</a> here.<small><i>...or just click the 'hello user' text up top at any time!</i></small></li>
@@ -24,27 +94,27 @@
   </div>
 
 {% else %}
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-lg-6">
-      <h5>Welcome, visitor!</h5>
+  <div class="container border-top mt-4 mb-3 pt-3">
+    <div class="row">
+      <div class="col-lg-6">
+        <h5>Welcome, visitor!</h5>
+          <ul>
+            <li>If you have an account, please <a href="{% url 'users:login' %}">login here</a>.</li>
+            <li>Looking for a particular film or person? Use the <b>Search</b> field up above.</li>
+          </ul>
+      </div>
+      <div class="col-lg-6"> 
+      <h5>Registered Users can:</h5>
         <ul>
-          <li>If you have an account, please <a href="{% url 'users:login' %}">login here</a>.</li>
-          <li>Looking for a particular film or person? Use the <b>Search</b> field up above.</li>
+          <li>Write reviews and get recommendations.</li>
+          <li>Mark films as Seen, Favorite, or add them to your Watchlist.</li>
+          <li>Track your progess through all 581 film noirs!</li>
         </ul>
-    </div>
-    <div class="col-lg-6"> 
-    <h5>Registered Users can:</h5>
-      <ul>
-        <li>Write reviews and get recommendations.</li>
-        <li>Mark films as Seen, Favorite, or add them to your Watchlist.</li>
-        <li>Track your progess through all 581 film noirs!</li>
-      </ul>
-    <a class="btn btn-outline-dark float-right" href="{% url 'users:register' %}" role="button">Register Now &raquo;</a>
+      <a class="btn btn-outline-dark float-right" href="{% url 'users:register' %}" role="button">Register Now &raquo;</a>
+      </div>
     </div>
   </div>
-</div>
-
 {% endif %}
+
 
 {% endblock content %}

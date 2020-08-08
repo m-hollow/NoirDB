@@ -2,7 +2,10 @@ from django.db import models
 from django.conf import settings                         # so we can use AUTH_USER_MODEL, per django docs
 # from django.contrib.auth import get_user_model         # learndjango version
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.text import slugify
+from random import sample
+
 
 #  person MUST be defined first, because Movie uses it (via references)
 class Person(models.Model):
@@ -121,11 +124,61 @@ class Movie(models.Model):
         # round(x, 1) will round x to 1 decimal place; without this, I can get results like .6666666, etc
         # add call to calculate_rank here, use it to update self.rank value...
 
+    def get_related_movies(self):
+        """a method to find three movies related to a given Movie instance; used with Daily Pick on front page"""
+
+        # right now this works just on the director; later, if I add the 'starring' field to Movies, it will work
+        # on the Movie's starring actors as well.
+
+        # TODO: figure out how to use F objects and/or select_related to reduce database hits in this process!
+
+        director = self.all_crew.get(crew__job__job_title='Director')
+        # starring    to be added later
+
+        # try-except isn't really necessary here because a query with no results will simply return an empty queryset.
+        # get all movies by the same director
+        same_director_films = Movie.objects.filter(crew__person=director, crew__job__job_title='Director').exclude(name=self.name)
+        # remember that 'director' above is the actual Person object of the director, as retrieved further above.
+
+        # return 3 or less movies by same director
+        if same_director_films.count() > 3:
+            return sample(list(same_director_films), 3)
+
+        else:
+            return same_director_films
 
     def save(self, *args, **kwargs):
         value_for_slug = self.name
         self.slug = slugify(value_for_slug, allow_unicode=True)
         super().save(*args, **kwargs)
+
+
+class DailyMovie(models.Model):
+
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(auto_now_add=True)
+    daily_count = models.PositiveIntegerField(default=0)
+    active_movie = models.BooleanField(default=False)
+
+    # constraint: only one record in DailyMovie table can have current_selection == True
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['active_movie'], condition=models.Q(active_movie=True), name='one active record only')   
+        ]
+
+    def __str__(self):
+        info_string = 'Daily Movie #{} - {}'.format(self.daily_count, self.movie.display_name)
+        return info_string
+
+    def check_update_status(self):
+        """If more than 1 day has passed since this movie was posted as daily movie, it's time for a new one"""
+
+        elapsed_time = timezone.now() - self.date_posted # creates a timedelta object, which has attribute 'days'
+        
+        if elapsed_time.days < 1:
+            return False
+        else:
+            return True
 
 
 class Cast(models.Model):

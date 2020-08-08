@@ -1,7 +1,7 @@
 """Defines URL patterns for films app"""
 
 from django.urls import path
-from .views import (IndexPage, MovieList, MovieDetail, PersonList, PersonDetail, SearchResults, WriteReview, 
+from .views import (IndexPage, MovieList, FreeMoviesList, MovieDetail, PersonList, PersonDetail, SearchResults, WriteReview, 
     DeleteReview, UserDetail, CreateUML, UpdateUML, GetRecommendations, FaqView, contactView, ContactSuccessView)
 
 app_name = 'films'
@@ -10,6 +10,8 @@ urlpatterns = [
     path('', IndexPage.as_view(), name='index'),
     # Page that shows all Movies
     path('all_movies/', MovieList.as_view(), name='all_movies'),
+
+    path('free_movies/', FreeMoviesList.as_view(), name='free_movies'),
     
     # Page that shows a single Movie
     path('movie/<int:pk>-<str:slug>/', MovieDetail.as_view(), name='movie'),

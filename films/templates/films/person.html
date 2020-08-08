@@ -6,10 +6,8 @@
 
 {% block content %}  
 <h5>
-  <i><small>born</small></i> {{ person.dob }}
-{% if person.dod %}
-  &nbsp; &nbsp;<i><small>died</small></i> {{ person.dod }}</li>
-{% endif %}
+  <i><small>born</small></i>{% if person.dob %} {{ person.dob }} {% else %} -- {% endif %}
+  &nbsp; &nbsp;<i><small>died</small></i>{% if person.dod %} {{ person.dod }} {% else %} -- {% endif %}</li>
 </h5>
 
 <br>

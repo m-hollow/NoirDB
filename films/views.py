@@ -1,6 +1,6 @@
 from itertools import chain
 from operator import attrgetter
-from random import sample
+from random import sample, choice, randint
 
 from django.shortcuts import render, redirect, get_object_or_404
 #from django.contrib.auth.decorators import login_required          # no longer used after switch to class-based views
@@ -12,7 +12,7 @@ from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth import get_user_model # this is here so user_detail view can set its model to user Model
 
 from django.views.generic import (TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import (Person, Movie, Cast, Job, Crew, Review, UserMovieLink, MediaLink)
+from .models import (Person, Movie, Cast, Job, Crew, Review, UserMovieLink, MediaLink, DailyMovie)
 from .forms import ReviewForm, ContactForm
 
 # A BIG Question: why aren't you using Table-level queries in your views, using all the models listed directly above?
@@ -24,6 +24,57 @@ from .forms import ReviewForm, ContactForm
 class IndexPage(TemplateView):
     template_name = 'films/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        top_five = get_top_five()
+
+        current_daily_record = DailyMovie.objects.get(active_movie=True)
+        current_daily_movie = current_daily_record.movie 
+
+        if not current_daily_record.check_update_status():
+            daily_movie = current_daily_movie         # 24 has not elapsed, keep the same movie
+        else:
+            active = True
+            
+            while active:
+                random_num = randint(0, 580)
+                new_choice = Movie.objects.all()[random_num]
+
+                if new_choice.name == None:     # just a security check to avoid infinitely running while loop
+                    daily_moive = current_daily_movie
+                    active = False
+                else:
+                    if new_choice.name == current_daily_movie.name:  # you MUST check on a field, not compare the objects themselves; they will be different! 
+                        continue                                 # Model objects are not identical, even if its the same record!
+                    else:
+                        current_daily_record.active_movie = False
+                        current_daily_record.save()
+
+                        new_record = DailyMovie(movie=new_choice, active_movie=True, daily_count=current_daily_record.daily_count+1)
+                        new_record.save()
+
+                        daily_movie = new_choice
+                        active = False
+
+
+        daily_director = daily_movie.all_crew.get(crew__job__job_title='Director')
+        daily_media_links = daily_movie.medialink_set.all()
+
+        related_movies = daily_movie.get_related_movies()
+
+        free_count = Movie.objects.filter(medialink__free=True).count()
+
+        context['free_count'] = free_count
+        context['page_name'] = 'Welcome'
+        context['daily_director'] = daily_director
+        context['daily_movie'] = daily_movie
+        context['daily_media_links'] = daily_media_links
+        context['related_movies'] = related_movies
+        context['top_five'] = top_five
+
+        return context
+
 
 class MovieList(ListView):
     paginate_by = 30
@@ -34,6 +85,27 @@ class MovieList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_name'] = 'All Movies'
+        return context
+
+class FreeMoviesList(ListView):
+    paginate_by = 20
+    template_name = 'films/free_movies.html'
+    context_object_name = 'free_movies'
+    count = 0
+
+    def get_queryset(self):
+        # get only the movies with a free link
+        free_movies = Movie.objects.filter(medialink__free=True)
+        self.count = free_movies.count()
+
+        return free_movies 
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['free_count'] = self.count
+        context['page_name'] = 'Free Movies'
         return context
 
 
@@ -259,7 +331,7 @@ class SearchResults(ListView):
 
         # Q: isn't it redundant to use both order_by() on the query and sorted() on the total list?
 
-        self.count = len(total_list) # update the count so it can be displayed in results
+        self.count = len(total_list) # update the count so it can be displayed in results; total list is not a query set so we can't use .count()
 
         return total_list
 
@@ -506,6 +578,26 @@ def contactView(request):
 
 class ContactSuccessView(TemplateView):
     template_name = 'films/contact_success.html'
+
+
+def get_top_five():
+    """Query the db for the top five of highest rated + most reviewed Movies"""
+
+    # this is simply a placeholder until I create the logic to query top movies based on num reviews and star ratings...
+    t1 = Movie.objects.get(name__icontains='out of the past')
+    t2 = Movie.objects.get(name__icontains='double indem')
+    t3 = Movie.objects.get(name__icontains='big sleep')
+    t4 = Movie.objects.get(name__icontains='the killers')
+    t5 = Movie.objects.get(name__icontains='maltese falcon')
+    # t6 = Movie.objects.get(name__icontains='scarlet street')
+    # t7 = Movie.objects.get(name__icontains='the asphalt jungle')
+    # t8 = Movie.objects.get(name__icontains='the big heat')
+    # t9 = Movie.objects.get(name__icontains='detour')
+    # t10 = Movie.objects.get(name__icontains='laura')
+
+    top_five = [t1, t2, t3, t4, t5]
+
+    return top_five
 
 
 
