@@ -15,9 +15,6 @@ from django.views.generic import (TemplateView, ListView, DetailView, CreateView
 from .models import (Person, Movie, Cast, Job, Crew, Review, UserMovieLink, MediaLink, DailyMovie)
 from .forms import ReviewForm, ContactForm
 
-# A BIG Question: why aren't you using Table-level queries in your views, using all the models listed directly above?
-# you are not resrtriced to just using the record-level object instance that is available in the view, you can also
-# do table-level queries with any of the Models above, they have all been imported to this file!
 
 # my new class-based views
 
@@ -285,15 +282,8 @@ class SearchResults(ListView):
 
         # first thing: yes, you an access 'search_results' inside the context object here, after the call to
         # super and assignment to context
-        # second thing: amazingly, the pagination still works even if the displayed items are not from the
-        # default context structure, which is 'search_results'. Here, I divide those up into new new entries
-        # into the context (Movies and People) and then display those -- the pagination works exaclty as if 
-        # I was displaying the results from search_results, it doesn't care that I'm displaying them via the
-        # other, non-default context keys. this must mean that the behind-the-scenes pagination that ListView
-        # is doing will simply work on --whatever objects are returned by get_queryset, regardless of how they
-        # are packaged in the context--. This must be true, because my objects still indeed came from the results
-        # of get_queryset, they are just stored in a different part of the context. (but these might just all
-        # be references to the objects, anyway, most likely....)
+        # second thing: interestingly, the pagination still works even if the displayed items are not from the
+        # default context structure, which is 'search_results'. 
 
         # this new approach means I don't actually need the custom template tag filter 'get_class', because I'm now
         # sorting this objects here, in this view, instead of sorting them in the template with the custom
@@ -307,12 +297,7 @@ class SearchResults(ListView):
             else:
                 people_results.append(result)
 
-
-        # the problem with this approach is that you are sending duplicate data in the context;
-        # 'search_results' already contains ALL the queried db objects; in order to split them up, 
-        # you've loaded them into new lists, and sent those lists in the context along with the original
-        # 'search_results' (which is the default objects, just renamed). BUT WAIT, perhaps these are all
-        # just references to the actual objects, in which case it doesn't really matter, does it? 
+        # check if you are sending duplicate data or just references to the same data when using this approach
 
         context['movie_results'] = movie_results
         context['people_results'] = people_results
@@ -362,7 +347,7 @@ class UserDetail(LoginRequiredMixin, DetailView): # I'm assuming this mixin work
 
         user_reviews = self.object.review_set.all().order_by('-date_added')  # note the '-' for descending order by date
 
-        # this shows up twice throughout your views; how to refactor to one location, used by both views?
+        # this shows up twice throughout your views;refactor to one location, used by both views, outside both classes
         action_dict = {
             'mark_seen': 'mark_seen',
             'unmark_seen': 'unmark_seen',

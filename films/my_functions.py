@@ -21,11 +21,6 @@ from .models import Person, Movie, Cast, Job, Crew, Review, UserMovieLink, Media
 # 8. import the add_movie_poster function from image_populator.py
 # 9. run a loop on all Movie objects, calling add_movie_poster() on each movie object
 
-# I think you are going to need to write a .py script that does ALL of the above
-# when executed from the command line. 
-# the area I'm unclear on is: django shell has direct access to the django
-# project. to do all these steps, will I need to 'replicate' that access somehow,
-# inside the script? how do we 'access' the django project? 
 
 def create_jobs():
     """Updates the db to contain the 5 possible job records"""
@@ -210,7 +205,7 @@ def add_cast_member(actor_role_pair, movie, flog):
             flog.save_log()
         else:
             cast_credit.save()
-        # note on above: you could pass the person object itself, using person_id or person.id, for same result.
+
 
 
 def process_crew(movie_dict):
@@ -345,19 +340,9 @@ def add_movie_poster(movie_object):
     else:
         print('No matching image file was found for the movie named {}'.format(movie_name))
 
+    # note: the call to .save() on attribute poster_image also saves the movie_object itself
 
-    # notably, there is no .save() call here on the movie object itself; does the .save() on the image
-    # automatically save the object, too? or did I run a .save() in my for loop that calls this function,
-    # previous? I'm guessing the former.....well, I just ran the function, and all the movies have images,
-    # so that call to save on the poster_image field must also save the object itself, interesting!
 
-# Job pks:
-
-# Director 2
-# Producer 3
-# Cinematographer 4
-# Writer 5
-# Composer 6
 
 
 
