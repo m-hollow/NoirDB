@@ -94,9 +94,9 @@ WSGI_APPLICATION = 'fndb_v4.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'fndb_local',
-        'USER': 'root',
-        'PASSWORD': 'turtle55',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
