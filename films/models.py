@@ -53,7 +53,7 @@ class Movie(models.Model):
     display_name = models.CharField(max_length=150, null=True)
     year = models.PositiveIntegerField(null=True)
     release_date = models.CharField(max_length=200, null=True)
-    studio = models.CharField(max_length=100, default='', blank=True) # are these default empty strings really necessary ?
+    studio = models.CharField(max_length=100, default='', blank=True) # 
     based_on = models.CharField(max_length=800, default='', blank=True) # db wanted me to set a default after removing null=True
 
     slug = models.SlugField(
@@ -75,8 +75,7 @@ class Movie(models.Model):
 
     # these will be updated by update_review_details method
     num_reviews = models.PositiveIntegerField(null=True)
-    avg_rating = models.FloatField(null=True)   # look into using DecimalField instead, though it has some 
-                                                # required arguments and might have issues with SQLite !!
+    avg_rating = models.FloatField(null=True)   
     
     user_notes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='UserMovieLink', related_name='movies_notes')
 
@@ -182,7 +181,7 @@ class DailyMovie(models.Model):
 
 
 class Cast(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE) # can/ should you do null=True here ?
+    person = models.ForeignKey(Person, on_delete=models.CASCADE) 
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
     # additional fields
@@ -203,7 +202,7 @@ class Job(models.Model):
 
 class Crew(models.Model):
     # linking models
-    person = models.ForeignKey(Person, on_delete=models.CASCADE) # can / should you do null=True here?
+    person = models.ForeignKey(Person, on_delete=models.CASCADE) 
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
     # additional fields
