@@ -1,27 +1,27 @@
 """Defines URL patterns for films app"""
 
 from django.urls import path
-from .views import (IndexPage, MovieList, FreeMoviesList, MovieDetail, PersonList, PersonDetail, SearchResults, WriteReview, 
+from .views import (IndexPage, MovieList, FreeMoviesList, MovieDetail, PersonList, PersonDetail, SearchResults, WriteReview,
     DeleteReview, UserDetail, CreateUML, UpdateUML, GetRecommendations, FaqView, contactView, ContactSuccessView)
 
 app_name = 'films'
 urlpatterns = [
-    # Home Page 
+    # Home Page
     path('', IndexPage.as_view(), name='index'),
     # Page that shows all Movies
     path('all_movies/', MovieList.as_view(), name='all_movies'),
 
     path('free_movies/', FreeMoviesList.as_view(), name='free_movies'),
-    
+
     # Page that shows a single Movie
     path('movie/<int:pk>-<str:slug>/', MovieDetail.as_view(), name='movie'),
 
-    # Page that shows all people 
+    # Page that shows all people
     path('all_people/', PersonList.as_view(), name='all_people'),
 
     # Page for a single Person
     path('person/<int:pk>-<str:slug>/', PersonDetail.as_view(), name='person'),
-    
+
     # Page that shows user Search Results
     path('results/', SearchResults.as_view(), name='search_results'),
 
@@ -51,4 +51,5 @@ urlpatterns = [
     path('contact_success/', ContactSuccessView.as_view(), name='contact_success'),
 
     ]
+
 

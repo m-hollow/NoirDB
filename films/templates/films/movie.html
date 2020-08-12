@@ -31,7 +31,7 @@
       <ul>
         <!--<li><b>FNDB Rank:</b> {{ movie.id }} <small>of 581</small></li> -->
         <li><b># of Reviews:</b> {{ movie.num_reviews }}</li>
-        <li><b>Avg. Rating:</b> 
+        <li><b>Avg. Rating:</b>
         {% if movie.avg_rating %}
           {{ movie.avg_rating }} <small> of 5 stars</small>
         {% else %}
@@ -61,10 +61,8 @@
     </div>
 
     <div class="col-lg-6">
-<!--       <h3>Cast & Crew</h3> -->
 
-      <!-- <ul> -->  
-       <!--  <li> --><p class="lead">Crew:</p>
+        <p class="lead">Crew:</p>
 
           <uL>
             <li>Director: <a href="{{ crew_dict.director.get_absolute_url }}"><span class="float-right">{{ crew_dict.director.name }}</span></a></li>
@@ -76,7 +74,7 @@
             <li>Music By: <span class="float-right"><i>none listed</i></span></li>
           {% endif %}
 
-            <li>Produced By: 
+            <li>Produced By:
           {% for producer in crew_dict.producers %}
             <a href="{{ producer.get_absolute_url }}"><span class="float-right">{{ producer.name }}&nbsp;</a>
           {% empty %}
@@ -95,11 +93,8 @@
           {% if crew_dict.writers|length == 1 %}
             <br>
           {% endif %}
-  
 
-<!--         </li> -->
-
-<!--         <li> --><p class="lead">Cast:</p>
+        <p class="lead">Cast:</p>
           <ul>
           {% for pair in cast_list %}
             <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a> <span class="float-right">&nbsp;<small><i>as</i></small> {{ pair.1 }}</span></li>
@@ -107,8 +102,6 @@
             <li>No cast credits have been entered for this movie.</li>
           {% endfor %}
           </ul>
-<!--         </li>
-      </ul> -->
 
     <br>
     <br>
@@ -141,7 +134,7 @@
         {% else %}
         <ul>
           {% if user_movie_details.seen %}
-            <li class="mb-2">You've seen this movie, nice! 
+            <li class="mb-2">You've seen this movie, nice!
               <span class="float-right">
                 <form action="{% url 'films:update_uml' user_movie_details.id actions.unmark_seen %}" method='post'>{% csrf_token %}
                   <button name='submit' class='btn btn-sm btn-link'><i>Mark Unseen</i></button>
@@ -190,7 +183,7 @@
               </form>
             </li>
           {% endif %}
-        {% endif %}  
+        {% endif %}
         </ul>
         </div>
 
@@ -203,7 +196,7 @@
           <li class="mb-1">Add movies to your Favorites list.</li>
           <li class="mb-1">Add movies to your Watch list.</li>
         </ul>
-        <a class="btn btn-outline-dark" href="{% url 'users:register' %}" role="button">Register &raquo;</a>
+        <a class="btn btn-outline-dark" href="{% url 'register' %}" role="button">Register &raquo;</a>
       </div>
     {% endif %}
     </div>

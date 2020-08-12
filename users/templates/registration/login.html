@@ -13,7 +13,7 @@
     <p>Your username and password didn't match. Please try again.</p>
   {% endif %}
 
-  <form method="post" action="{% url 'users:login' %}" class="form">
+  <form method="post" action="{% url 'login' %}" class="form">
     {% csrf_token %}
     {{ form|crispy }}
     {% buttons %}
@@ -24,12 +24,6 @@
   </form>
 
 <br>
-<p><b><i>Forgotten Password?</i></b> You can request a reset link by <a href="{% url 'users:password_reset' %}">clicking here.</a></p>
+<p><b><i>Forgotten Password?</i></b> You can request a reset link by <a href="{% url 'password_reset' %}">clicking here.</a></p>
 
 {% endblock content %}
-
-<!-- random note: previously, the button tag had name="submit" instead of type="submit". I believe the result is identical, but it has me a bit confused about what 'name' means, as tag property. 
-
-    ANSWER: the *default* type of button is submit. when you did name='submit,' you were indeed
-    giving it a 'name' of submit, and *it was not giving it submit functionality*. The only reason
-    it worked is because the default type is submit, and you didn't specify a type. So, it was still submit, but it's worth understanding that this is NOT becuase of the name='' property!

@@ -46,7 +46,7 @@
         <br>
         {% if related_movies %}
         <div class="mb-1">
-          <i>See more from </i>{{ daily_director.name }}:
+          See more from <a href="{{ daily_director.get_absolute_url }}"><i>{{ daily_director.name }}</i></a>:
         </div>
           <ul>
           {% for movie in related_movies %}
@@ -99,22 +99,22 @@
       <div class="col-lg-6">
         <h5>Welcome, visitor!</h5>
           <ul>
-            <li>If you have an account, please <a href="{% url 'users:login' %}">login here</a>.</li>
+            <li>If you have an account, please <a href="{% url 'login' %}">login here</a>.</li>
             <li>Looking for a particular film or person? Use the <b>Search</b> field up above.</li>
           </ul>
       </div>
-      <div class="col-lg-6"> 
+      <div class="col-lg-6">
       <h5>Registered Users can:</h5>
         <ul>
           <li>Write reviews and get recommendations.</li>
           <li>Mark films as Seen, Favorite, or add them to your Watchlist.</li>
           <li>Track your progess through all 581 film noirs!</li>
         </ul>
-      <a class="btn btn-outline-dark float-right" href="{% url 'users:register' %}" role="button">Register Now &raquo;</a>
+      <a class="btn btn-outline-dark float-right" href="{% url 'register' %}" role="button">Register Now &raquo;</a>
       </div>
     </div>
   </div>
-{% endif %}
 
+{% endif %}
 
 {% endblock content %}

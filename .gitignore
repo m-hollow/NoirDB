@@ -5,3 +5,5 @@ media
 ve_fndb4
 .DS_Store
 .env
+settings.py
+/migrations

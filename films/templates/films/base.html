@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>NoirDB 
+  <title>NoirDB
   {% if page_name %} - {{ page_name }}{% endif %}
   </title>
 
@@ -17,7 +17,7 @@
 
 </head>
 
-<body>  
+<body>
 <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color:#D3D3D3;">
   <a class="navbar-brand" href="{% url 'films:index' %}">NoirDB</a>
 
@@ -36,14 +36,14 @@
           <a class="nav-link" href="{{ user.get_absolute_url }}">Your Info</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
+          <a class="nav-link" href="{% url 'logout' %}">Log out</a>
         </li>
       {% else %}
         <li class="nav-item {% if url_name == 'register' %}active{% endif %}">
-          <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+          <a class="nav-link" href="{% url 'register' %}">Register</a>
         </li>
         <li class="nav-item {% if url_name == 'login' %}active{% endif %}">
-          <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
+          <a class="nav-link" href="{% url 'login' %}">Log in</a>
         </li>
         {% endif %}
         <li class="nav-item {% if url_name == 'faq' %}active{% endif %}">
@@ -74,9 +74,7 @@
     </div>
     <div>
       {% block content %}{% endblock content %}
-      <br>
     </div>
-
   </main>
 
 </body>

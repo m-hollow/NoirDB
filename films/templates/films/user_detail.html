@@ -28,9 +28,9 @@
 
     <div class="col-lg-4">
       <div class="mb-3"><h4>Edit your Account</h4></div>
-        <a class="btn btn-outline-dark btn-sm mb-2" href="{% url 'users:password_change' %}" role="button">Update Password</a>
+        <a class="btn btn-outline-dark btn-sm mb-2" href="{% url 'password_change' %}" role="button">Update Password</a>
         <br>
-        <a class="btn btn-outline-dark btn-sm mb-2" href="{% url 'users:close_account' user.id user.slug %}" role="button">Close Account</a>
+        <a class="btn btn-outline-dark btn-sm mb-2" href="{% url 'close_account' user.id user.slug %}" role="button">Close Account</a>
     </div>
   </div>
 </div>
@@ -78,7 +78,7 @@
 
 <br>
 
-<div class="container">  
+<div class="container">
   <h3>Your Reviews</h3>
 
   {% for review in user_reviews %}

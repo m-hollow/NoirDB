@@ -6,14 +6,13 @@ from django.utils import timezone
 from django.utils.text import slugify
 from random import sample
 
-
 #  person MUST be defined first, because Movie uses it (via references)
 class Person(models.Model):
     """A person in the database"""
     name = models.CharField(max_length=150)
     dob = models.DateField(null=True, blank=True)
     dod = models.DateField(null=True, blank=True)
-    
+
     slug = models.SlugField(
         default='',
         editable=False,
@@ -53,7 +52,7 @@ class Movie(models.Model):
     display_name = models.CharField(max_length=150, null=True)
     year = models.PositiveIntegerField(null=True)
     release_date = models.CharField(max_length=200, null=True)
-    studio = models.CharField(max_length=100, default='', blank=True) # 
+    studio = models.CharField(max_length=100, default='', blank=True) # are these default empty strings really necessary ?
     based_on = models.CharField(max_length=800, default='', blank=True) # db wanted me to set a default after removing null=True
 
     slug = models.SlugField(
@@ -61,7 +60,7 @@ class Movie(models.Model):
         editable=True,
         max_length=150,
         )
-    
+
     poster_image = models.ImageField(upload_to='posters/', blank=True) # remember that TYPE effects behavior of null= and blank=!
 
     film_summary = models.TextField(default='', blank=True)
@@ -75,8 +74,9 @@ class Movie(models.Model):
 
     # these will be updated by update_review_details method
     num_reviews = models.PositiveIntegerField(null=True)
-    avg_rating = models.FloatField(null=True)   
-    
+    avg_rating = models.FloatField(null=True)   # look into using DecimalField instead, though it has some
+                                                # required arguments and might have issues with SQLite !!
+
     user_notes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='UserMovieLink', related_name='movies_notes')
 
     class Meta:
@@ -106,8 +106,8 @@ class Movie(models.Model):
 
     def update_review_details(self):
         """Queries Review table to get all reviews of current movie object, then updates num_reviews and avg_rating"""
-        
-        movie_reviews = Review.objects.filter(movie=self)  
+
+        movie_reviews = Review.objects.filter(movie=self)
         if movie_reviews.count() == 0:
             self.avg_rating = None
             self.num_reviews = None
@@ -129,12 +129,11 @@ class Movie(models.Model):
         # right now this works just on the director; later, if I add the 'starring' field to Movies, it will work
         # on the Movie's starring actors as well.
 
-        # TODO: figure out how to use F objects and/or select_related to reduce database hits in this process!
+        # TODO: figure out how to use F objects and/or select/prefectch_related to reduce database hits in this process!
 
         director = self.all_crew.get(crew__job__job_title='Director')
         # starring    to be added later
 
-        # try-except isn't really necessary here because a query with no results will simply return an empty queryset.
         # get all movies by the same director
         same_director_films = Movie.objects.filter(crew__person=director, crew__job__job_title='Director').exclude(name=self.name)
         # remember that 'director' above is the actual Person object of the director, as retrieved further above.
@@ -152,6 +151,11 @@ class Movie(models.Model):
         super().save(*args, **kwargs)
 
 
+    def save(self, *args, **kwargs):
+        value_for_slug = self.name
+        self.slug = slugify(value_for_slug, allow_unicode=True)
+        super().save(*args, **kwargs)
+
 class DailyMovie(models.Model):
 
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
@@ -162,7 +166,7 @@ class DailyMovie(models.Model):
     # constraint: only one record in DailyMovie table can have current_selection == True
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['active_movie'], condition=models.Q(active_movie=True), name='one active record only')   
+            models.UniqueConstraint(fields=['active_movie'], condition=models.Q(active_movie=True), name='one active record only')
         ]
 
     def __str__(self):
@@ -173,15 +177,14 @@ class DailyMovie(models.Model):
         """If more than 1 day has passed since this movie was posted as daily movie, it's time for a new one"""
 
         elapsed_time = timezone.now() - self.date_posted # creates a timedelta object, which has attribute 'days'
-        
+
         if elapsed_time.days < 1:
             return False
         else:
             return True
 
-
 class Cast(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE) 
+    person = models.ForeignKey(Person, on_delete=models.CASCADE) # can/ should you do null=True here ?
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
     # additional fields
@@ -202,7 +205,7 @@ class Job(models.Model):
 
 class Crew(models.Model):
     # linking models
-    person = models.ForeignKey(Person, on_delete=models.CASCADE) 
+    person = models.ForeignKey(Person, on_delete=models.CASCADE) # can / should you do null=True here?
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
     # additional fields
@@ -231,7 +234,7 @@ class UserMovieLink(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['user', 'movie'], name='user_movie_unique')
         ]
-    
+
     def __str__(self):
         text = "{}'s details for {}".format(self.user.username, self.movie.name)
         return text
@@ -241,7 +244,7 @@ class Review(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # related name? e.g. reviews (via User object)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE) # related name? e.g. reviews (via Movie object)
-    
+
     date_added = models.DateTimeField(auto_now_add=True)
 
     ONE = 1
@@ -264,7 +267,7 @@ class Review(models.Model):
     # ideally instead of loading an error page, this should redirect to a 'You've already reviewed this...' message
     # however, the logic of the webpage prevents the Write Review button from showing up if it's already been revewied,
     # but still perhaps best practice to avoid this?
-    
+
     # used to determine how many un-filled stars to print in template, based on star rating value.
     @property
     def get_empty_stars(self):
@@ -305,7 +308,7 @@ class Review(models.Model):
     def check_uml_status(self):
         """this method simply creates and/or updates a UML object after a Review is written"""
         # what this solves: if user writes a Review of a movie, but never bothered to click 'add details',
-        # this does it automatically, creating the UML object and updating Seen to True. if UML already 
+        # this does it automatically, creating the UML object and updating Seen to True. if UML already
         # exists (but user never clicked seen), it simply updates Seen to True.
         if UserMovieLink.objects.filter(user=self.user, movie=self.movie).exists():
             uml_object = UserMovieLink.objects.get(user=self.user, movie=self.movie)
@@ -318,7 +321,7 @@ class Review(models.Model):
             uml_object = UserMovieLink.objects.create(user=self.user, movie=self.movie, seen=True)
 
         # a feeling: since the above method is -creating and/or modifying- UML model records, it seems like
-        # it should be a method of UML, not of Review. Review could simply call it, instead of doing 
+        # it should be a method of UML, not of Review. Review could simply call it, instead of doing
         # this work here. for now, though, it's a small and efficient bit of code, and is working
         # just fine, so I don't see a problem with leaving it here.
 
@@ -333,7 +336,7 @@ class MediaLink(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['movie', 'url_link'], name='unique_movielink_matches')   
+            models.UniqueConstraint(fields=['movie', 'url_link'], name='unique_movielink_matches')
         ]
 
     def __str__(self):

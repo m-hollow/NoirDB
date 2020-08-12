@@ -3,7 +3,8 @@
 from django.urls import path, include
 from .views import RegisterView, CloseAccount, CloseSuccess
 
-app_name = 'users'
+# the auth views for password reset will fail with the namespace
+#app_name = 'users'
 urlpatterns = [
     # Include default auth urls.
     path('', include('django.contrib.auth.urls')),

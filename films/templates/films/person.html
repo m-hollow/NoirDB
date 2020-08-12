@@ -4,7 +4,7 @@
   <h1>{{ person.name }}</h1>
 {% endblock page_header %}
 
-{% block content %}  
+{% block content %}
 <h5>
   <i><small>born</small></i>{% if person.dob %} {{ person.dob }} {% else %} -- {% endif %}
   &nbsp; &nbsp;<i><small>died</small></i>{% if person.dod %} {{ person.dod }} {% else %} -- {% endif %}</li>
@@ -12,63 +12,63 @@
 
 <br>
 
-<!-- <h5>Film Noir Credits</h5>
-<div class="container">
-  <div class="row">
-    <div class="col-auto p-2">
-      <h4><small>as</small> Performer</h4>
-      <ul>
-        {% for pair in movie_role_pairs %}
-          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.display_name }}</a><span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1 }}</span></li>  
-        {% empty %}
-          <li>No cast credits exist for {{ person.name }}</li>
-        {% endfor %}
-     </ul>
-    </div>
+<!--<h5>Film Noir Credits</h5>-->
+<!--<div class="container">-->
+<!--  <div class="row">-->
+<!--    <div class="col-auto p-2">-->
+<!--      <h4><small>as</small> Performer</h4>-->
+<!--      <ul>-->
+<!--        {% for pair in movie_role_pairs %}-->
+<!--          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.display_name }}</a><span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1 }}</span></li>  -->
+<!--        {% empty %}-->
+<!--          <li>No cast credits exist for {{ person.name }}</li>-->
+<!--        {% endfor %}-->
+<!--     </ul>-->
+<!--    </div>-->
 
-    <div class="col-1">
-    </div>
+<!--    <div class="col-1">-->
+<!--    </div>-->
 
-    <div class="col-auto p-2">
-      <h4><small>as</small> Crew</h4>
-      <ul>
-        {% for pair in movie_job_pairs %}
-          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.display_name }}</a>
-            {% if pair.1|length > 1 %}
-              <span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1|join:" | " }}</span>
-            {% else %}
-              <span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1.0.job_title }}</span>  
-            {% endif %}
-          </li>
-        {% empty %}
-          <li>No crew credits exist for {{ person.name }}</li>
-        {% endfor %} 
-      </ul>
-    </div>
-  </div>
-</div> -->
+<!--    <div class="col-auto p-2">-->
+<!--      <h4><small>as</small> Crew</h4>-->
+<!--      <ul>-->
+<!--        {% for pair in movie_job_pairs %}-->
+<!--          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.display_name }}</a>-->
+<!--            {% if pair.1|length > 1 %}-->
+<!--              <span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1|join:" | " }}</span>-->
+<!--            {% else %}-->
+<!--              <span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ pair.1.0.job_title }}</span>  -->
+<!--            {% endif %}-->
+<!--          </li>-->
+<!--        {% empty %}-->
+<!--          <li>No crew credits exist for {{ person.name }}</li>-->
+<!--        {% endfor %} -->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 <h5>Film Noir Credits</h5>
 <div class="container">
   <div class="row">
-    <div class="col-lg mr-2 p-2">
+    <div class="col-lg p-2 mr-2">
       <h4><small>as</small> Performer</h4>
       <ul>
         {% for pair in movie_role_pairs %}
-          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a><span class="float-right">{{ pair.1 }}</span></li>  
+          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.display_name }}</a><span class="float-right">{{ pair.1 }}</span></li>
         {% empty %}
           <li>No cast credits exist for {{ person.name }}</li>
         {% endfor %}
      </ul>
     </div>
 
-    <!-- <div class="col-lg-1"></div> -->
+    <!--<div class="col-lg-1"></div>-->
 
-    <div class="col-lg mr-2 p-2">
+    <div class="col-lg p-2 mr-2">
       <h4><small>as</small> Crew</h4>
       <ul>
         {% for pair in movie_job_pairs %}
-          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a>
+          <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.display_name }}</a>
             {% if pair.1|length > 1 %}
               <span class="float-right">{{ pair.1|join:" | " }}</span>
             {% else %}
@@ -77,12 +77,11 @@
           </li>
         {% empty %}
           <li>No crew credits exist for {{ person.name }}</li>
-        {% endfor %} 
+        {% endfor %}
       </ul>
     </div>
   </div>
 </div>
 
-  
 {% endblock content %}
 

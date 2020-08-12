@@ -3,14 +3,14 @@
 
 {% block page_header %}
   <h2>Search Results for "{{ query }}"</h2>
-{% endblock page_header %}  
+{% endblock page_header %}
 
 {% block content %}
   <p>Total matches found: {{ count }}</p>
 
 <div class="container">
   <div class="row">
-    <div class="col-lg mr-2 p-2">      
+    <div class="col-lg-4 mr-2 p-2">
       <h4> Movie Results</h4>
       {% if not movie_results %}
         <ul>
@@ -25,9 +25,7 @@
       {% endif %}
     </div>
 
-    <!-- <div class="col-lg-1"></div> -->
-
-    <div class="col-lg mr-2 p-2">
+    <div class="col-lg-4 mr-2 p-2">
       <h4> People Results</h4>
       {% if not people_results %}
         <ul>

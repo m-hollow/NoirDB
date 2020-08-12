@@ -10,7 +10,7 @@
     <div class="container">
       <div class="row">
         <div class="col-2">
-          <form action="{% url 'users:close_account' user.id user.slug %}" method='post'>
+          <form action="{% url 'close_account' user.id user.slug %}" method='post'>
             {% csrf_token %}
             <button name='submit' class='btn btn-danger'>Yes, do it!</button>
           </form>
