@@ -5,7 +5,7 @@ from random import sample, randint
 from django.shortcuts import render, redirect
 #from django.contrib.auth.decorators import login_required          # no longer used after switch to class-based views
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.core.mail import send_mail, BadHeaderError
 
@@ -309,6 +309,32 @@ class SearchResults(ListView):
         self.count = len(total_list) # update the count so it can be displayed in results
 
         return total_list
+
+
+def autocomplete_view(request):
+    """Called by the jQueryUI autocomplete widget to use ajax for autocompletion in search field"""
+    if 'term' in request.GET:
+        qs_movies = Movie.objects.filter(display_name__icontains=request.GET.get('term'))
+        qs_people = Person.objects.filter(name__icontains=request.GET.get('term'))
+
+        total_package = []
+
+        for movie in qs_movies:
+            name = movie.display_name
+            relative_url = movie.get_absolute_url()
+            url = request.build_absolute_uri(relative_url)
+            total_package.append({'label': name, 'url': url})
+
+        for person in qs_people:
+            name = person.name
+            relative_url = person.get_absolute_url()
+            url = request.build_absolute_uri(relative_url)
+            total_package.append({'label': name, 'url': url})
+
+        return JsonResponse(total_package, safe=False)
+
+    # note that this function is not a typical view -- it does not render a new page; it exists only to 
+    # return JSON data to the caller (jQuery UI autocomplete). 
 
 
 class UserDetail(LoginRequiredMixin, DetailView): # I'm assuming this mixin works on DetailView as well as CreateView...

@@ -1,0 +1,49 @@
+{% extends 'films/base.html' %}
+{% load bootstrap4 %}
+
+
+{% block page_header %}
+<h4>AutoComplete Search Testing</h4>
+{% endblock page_header %}
+
+{% block content %}
+
+<!-- the below example is tested and WORKING -->
+
+<!-- <script>
+$( function() {
+    $( "#thing" ).autocomplete({
+      source: ["Cats", "Dogs", "Trees", "Twizzlers"]
+    });
+  } );
+</script>
+
+
+<form>
+  <label for="thing">Things </label>
+  <input id="thing" type="text">
+</form> -->
+
+
+
+<script>
+$( function() {
+    $( "#auto_complete" ).autocomplete({
+      source: "{% url 'films:autocomplete' %}",
+      minLength: 2
+    });
+  } );
+</script>
+
+<!-- next step: where does this form GO e.g. view to call -->
+<form action="{% url 'films:search_results' %}" method='get' class="form-inline my-2 my-lg-0">
+  <input id="auto_complete" type="text" name='q' class="form-control mr-sm-2">
+ <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+
+
+
+
+
+{% endblock content %}

@@ -13,6 +13,9 @@
   {% bootstrap_css %}
   {% bootstrap_javascript jquery='full' %}
 
+  <!-- jquery-ui css -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!-- my css file -->
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
 </head>
@@ -61,7 +64,8 @@
 {% endif %}
     <div class="navbar-nav ml-auto">
     <form action="{% url 'films:search_results' %}" method='get' class="form-inline my-2 my-lg-0">
-      <input name='q' class="form-control mr-sm-2" type="text" required placeholder="Search..." aria-label="Search">
+      {% csrf_token %}
+      <input id="search_input" name='q' class="form-control mr-sm-2" type="text" required placeholder="Movie or Person..." aria-label="Search">
       <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
     </form>
     </div>
@@ -77,8 +81,22 @@
     </div>
   </main>
 
-</body>
+<!-- load jQuery-UI -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<script>
+$( function() {
+    $( "#search_input" ).autocomplete({
+      source: "{% url 'films:autocomplete' %}",
+      minLength: 2,
+      select: function(event, ui) {
+        window.location = ui.item.url;
+      }
+    });
+  } );
+</script>
+
+</body>
 </html>
 
 

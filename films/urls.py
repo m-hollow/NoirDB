@@ -2,7 +2,7 @@
 
 from django.urls import path
 from .views import (IndexPage, MovieList, FreeMoviesList, MovieDetail, PersonList, PersonDetail, SearchResults, WriteReview,
-    DeleteReview, UserDetail, CreateUML, UpdateUML, GetRecommendations, FaqView, contactView, ContactSuccessView)
+    DeleteReview, UserDetail, CreateUML, UpdateUML, GetRecommendations, FaqView, contactView, ContactSuccessView, autocomplete_view)
 
 app_name = 'films'
 urlpatterns = [
@@ -49,6 +49,8 @@ urlpatterns = [
     path('contact/', contactView, name='contact'),
 
     path('contact_success/', ContactSuccessView.as_view(), name='contact_success'),
+
+    path('auto_comp/', autocomplete_view, name='autocomplete'),
 
     ]
 
