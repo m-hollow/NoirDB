@@ -1,12 +1,513 @@
 {% extends 'films/base.html' %}
 
 {% block page_header %}
-  <h2>The 581 Film Noir Movies</h2>
+  <h1>All 581 Films</h1>
 {% endblock page_header %}
 
 {% block content %}
 
-  <ul>
+<div class="container">
+
+  <div class="row">
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">#</h4>
+        <ul>
+          {% for movie in numerics %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with #</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">A</h4>
+        <ul>
+          {% for movie in sorted_movies.a %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with A</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">B</h4>
+        <ul>
+          {% for movie in sorted_movies.b %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with B</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">C</h4>
+        <ul>
+          {% for movie in sorted_movies.c %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with C</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">D</h4>
+        <ul>
+          {% for movie in sorted_movies.e %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with E</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">F</h4>
+        <ul>
+          {% for movie in sorted_movies.f %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with F</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">G</h4>
+        <ul>
+          {% for movie in sorted_movies.g %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with G</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">H</h4>
+        <ul>
+          {% for movie in sorted_movies.h %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with H</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">I</h4>
+        <ul>
+          {% for movie in sorted_movies.i %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with I</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">J</h4>
+        <ul>
+          {% for movie in sorted_movies.j %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with J</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">K</h4>
+        <ul>
+          {% for movie in sorted_movies.k %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with K</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">L</h4>
+        <ul>
+          {% for movie in sorted_movies.l %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with L</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">M</h4>
+        <ul>
+          {% for movie in sorted_movies.m %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with M</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">N</h4>
+        <ul>
+          {% for movie in sorted_movies.n %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with N</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">O</h4>
+        <ul>
+          {% for movie in sorted_movies.o %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with O</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">P</h4>
+        <ul>
+          {% for movie in sorted_movies.p %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with P</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">Q</h4>
+        <ul>
+          {% for movie in sorted_movies.q %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with Q</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">R</h4>
+        <ul>
+          {% for movie in sorted_movies.r %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with R</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">S</h4>
+        <ul>
+          {% for movie in sorted_movies.s %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with S</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">T</h4>
+        <ul>
+          {% for movie in sorted_movies.t %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with T</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">U</h4>
+        <ul>
+          {% for movie in sorted_movies.u %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with U</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">V</h4>
+        <ul>
+          {% for movie in sorted_movies.v %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with V</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">W</h4>
+        <ul>
+          {% for movie in sorted_movies.w %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with W</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">X</h4>
+        <ul>
+          {% for movie in sorted_movies.x %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with X</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">Y</h4>
+        <ul>
+          {% for movie in sorted_movies.y %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with Y</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">Z</h4>
+        <ul>
+          {% for movie in sorted_movies.z %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with Z</li>
+          {% endfor %}
+        </ul>
+    </div>
+  </div>
+</div>
+
+<br>
+<br>
+<!--   <ul>
     {% for movie in all_movies %}
       <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
     {% empty %}
@@ -41,26 +542,6 @@
         {% endif %}
         </ul>
     </span>
-  </div>
-
-<!-- 
-  <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-  </div>
- -->
+  </div> -->
 
 {% endblock content %}

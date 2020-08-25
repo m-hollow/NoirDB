@@ -72,13 +72,32 @@ class IndexPage(TemplateView):
 
 
 class MovieList(ListView):
-    paginate_by = 30
+    #paginate_by = 30
     queryset = Movie.objects.order_by('name')
     template_name = 'films/all_movies.html'
     context_object_name = 'all_movies'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        alphabet = 'abcdefghijklmnopqrstuvwxyz'
+        num_starts = ['5', '7', '9']
+
+        all_movies = context['all_movies']
+        sorted_movies = {}
+        numerics = []
+
+        # create a key-value pair for each letter of alphabet, value is query result of movies starting with that letter
+        for i in alphabet:
+            sorted_movies[i] = Movie.objects.filter(display_name__istartswith=i)
+
+        # get the movies that don't start with a letter
+        for i in num_starts:
+            results = Movie.objects.filter(display_name__istartswith=i)
+            numerics.extend(results)
+
+        context['sorted_movies'] = sorted_movies
+        context['numerics'] = numerics
         context['page_name'] = 'All Movies'
         return context
 
@@ -280,7 +299,8 @@ class SearchResults(ListView):
         people_results = []
 
         # Note: yes, you can access 'search_results' from the context object here, after the call to
-        # super and assignment to context
+        # super-- this works because get_queryset has already been called, and the result returned from it has been
+        # given the name 'search_results' as defined in the attributes above these methods (context_object_name = ...)
         search_results = context['search_results']
 
         for result in search_results:

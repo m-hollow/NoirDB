@@ -35,7 +35,7 @@
     <ul class="navbar-nav mr-auto">
       {% with url_name=request.resolver_match.url_name %}
       <li class="nav-item {% if url_name == 'all_movies' %}active{% endif %}">
-        <a class="nav-link" href="{% url 'films:all_movies' %}">All Movies</a>
+        <a class="nav-link" href="{% url 'films:all_movies' %}">All Films</a>
       </li>
       {% if user.is_authenticated %}
         <li class="nav-item {% if url_name == 'user_detail' %}active{% endif %}">
@@ -69,7 +69,7 @@
     <form action="{% url 'films:search_results' %}" method='get' class="form-inline my-2 my-lg-0">
       {% csrf_token %}
       <input id="search_input" name='q' class="form-control mr-sm-2" type="text" required placeholder="Movie or Person..." aria-label="Search">
-      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-outline-secondary my-2 my-sm-0 d-none d-md-block" type="submit">Search</button>
     </form>
     </div>
   </div>
