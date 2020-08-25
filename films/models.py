@@ -151,11 +151,6 @@ class Movie(models.Model):
         super().save(*args, **kwargs)
 
 
-    def save(self, *args, **kwargs):
-        value_for_slug = self.name
-        self.slug = slugify(value_for_slug, allow_unicode=True)
-        super().save(*args, **kwargs)
-
 class DailyMovie(models.Model):
 
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
@@ -184,8 +179,10 @@ class DailyMovie(models.Model):
             return True
 
 class Cast(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE) # can/ should you do null=True here ?
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+    starring_role = models.BooleanField(default=False)
 
     # additional fields
     role = models.CharField(max_length=200, blank=True)   # character they played in the movie
@@ -205,7 +202,7 @@ class Job(models.Model):
 
 class Crew(models.Model):
     # linking models
-    person = models.ForeignKey(Person, on_delete=models.CASCADE) # can / should you do null=True here?
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
     # additional fields

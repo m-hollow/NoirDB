@@ -29,7 +29,6 @@
         {% endif %}
       </ul>
       <ul>
-        <!--<li><b>FNDB Rank:</b> {{ movie.id }} <small>of 581</small></li> -->
         <li><b># of Reviews:</b> {{ movie.num_reviews }}</li>
         <li><b>Avg. Rating:</b>
         {% if movie.avg_rating %}
@@ -90,11 +89,27 @@
           {% endfor %}
             </li>
           </uL>
-          {% if crew_dict.writers|length == 1 %}
+<!--           {% if crew_dict.writers|length == 1 %}
             <br>
-          {% endif %}
+          {% endif %} -->
 
+        {% if starring_list %}
+        <p class="lead">Starring:</p>
+          <ul>
+          {% for pair in starring_list %}
+            <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a><span class="float-right">&nbsp;<small><i>
+            as</i></small> {{ pair.1 }}</span></li>
+          {% empty %}
+            <li>No starring credits in this movie</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if not starring_list %}
         <p class="lead">Cast:</p>
+        {% else %}
+        <p class="lead">With:</p>
+        {% endif %}
           <ul>
           {% for pair in cast_list %}
             <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a> <span class="float-right">&nbsp;<small><i>as</i></small> {{ pair.1 }}</span></li>
@@ -202,8 +217,6 @@
     </div>
   </div>
 </div>
-
-<br>
 
 <div class="container pb-2 mb-2 border-bottom">
   <div class="row">

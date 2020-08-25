@@ -83,7 +83,7 @@ class MovieList(ListView):
         alphabet = 'abcdefghijklmnopqrstuvwxyz'
         num_starts = ['5', '7', '9']
 
-        all_movies = context['all_movies']
+        # all_movies = context['all_movies']
         sorted_movies = {}
         numerics = []
 
@@ -154,19 +154,28 @@ class MovieDetail(DetailView):
             'writers': writers,
         }
 
-        # get all Person objects from this Movie's cast
-        cast = self.object.all_cast.all().order_by('name')
+        # the context does not actually include 'cast' objects; so to sort on 'starring role', you need to do
+        # it here, in the view.
 
-        cast_role_pairs = [] # store a Person object and role they played together in a list, in this list.
+        # get all Person objects from this Movie's cast who are Starring Roles
+        starring_cast = self.object.all_cast.filter(cast__starring_role=True).order_by('name')
+        # get all Person objects from this Movie's cast who are not Starring Roles
+        cast = self.object.all_cast.filter(cast__starring_role=False).order_by('name')
 
-        # get the role each person played from the intermediary table Cast, store both  (person and role) together
+        starring_role_pairs = [] # store a Person object and role they played together in a list, nested in this list
+        cast_role_pairs = [] 
+
+        # get the role each person played from the intermediary table Cast, then store both (person and role) together in a list
+        for person in starring_cast:
+            role_played = person.cast_set.get(movie=self.object).role  # role is an attribute of the cast object returned by the query
+            starring_role_pairs.append([person, role_played])
+
+        # get the role each person played from the intermediary table Cast, then store both (person and role) together in a list
         for person in cast:
             role_played = person.cast_set.get(movie=self.object).role # grab role attribute from record instance returned by get()
             #role_played = self.object.cast_set.get(person=person).role
             cast_role_pairs.append([person, role_played])
 
-        # note: alternate way to query for cast + role is to query on Cast table itself, retreiving instances
-        # of Cast objects for this movie, then store the Person.name and role field from each record.
 
         # the movie.based_on field is a CharField, but I want to break it down into smaller pieces, for better template formatting:
         if self.object.based_on != 'n/a':
@@ -222,6 +231,7 @@ class MovieDetail(DetailView):
 
         # build the complete context
         context['crew_dict'] = crew_dict
+        context['starring_list'] = starring_role_pairs
         context['cast_list'] = cast_role_pairs
         context['reviews'] = movie_reviews
         context['media_links'] = media_links
