@@ -20,7 +20,8 @@
       <button type="submit" class="btn btn-secondary">Log in</button>
     {% endbuttons %}
 
-    <input type="hidden" name="next" value="{% url 'films:index' %}" />
+    <input type="hidden" name="next" value="{{ request.GET.next }}" />
+    <!-- <input type="hidden" name="next" value="{% url 'films:index' %}" /> -->
   </form>
 
 <br>

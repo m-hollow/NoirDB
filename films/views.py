@@ -58,7 +58,7 @@ class IndexPage(TemplateView):
 
         related_movies = daily_movie.get_related_movies()
 
-        free_count = Movie.objects.filter(medialink__free=True).count()
+        free_count = Movie.objects.filter(medialink__free=True).distinct().count() # movies can have more than one free link, distinct avoids duplicates
 
         context['free_count'] = free_count
         context['page_name'] = 'Welcome'

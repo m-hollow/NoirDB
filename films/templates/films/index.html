@@ -99,7 +99,7 @@
       <div class="col-lg-6">
         <h5>Welcome, visitor!</h5>
           <ul>
-            <li>If you have an account, please <a href="{% url 'login' %}">login here</a>.</li>
+            <li>If you have an account, please <a href="{% url 'login' %}?next={{ request.path|urlencode }}">login here</a>.
             <li>Looking for a particular film or person? Use the <b>Search</b> field up above.</li>
           </ul>
       </div>

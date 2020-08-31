@@ -32,7 +32,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['localhost', '10.0.0.35']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '10.0.0.35']
 
 
 # Application definition
@@ -152,7 +152,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # My settings
-LOGIN_URL = 'users:login' # used by django to redirect to login when @login_required gets unauthorized access
+LOGIN_URL = 'login' # used by django to redirect to login when @login_required gets unauthorized access
 
 AUTH_USER_MODEL = 'users.CustomUser'
 

@@ -41,22 +41,21 @@
       <br>
       <h5>Where to watch <i>{{ movie.display_name }}</i></h5>
       {% if media_links %}
-        {% for link in media_links %}
         <ul>
+        {% for link in media_links %}
           <li>Watch at <a href="{{ link.url_link }}">{{ link.host|capfirst }}</a>
           {% if link.free != True %}
-            <small>&nbsp;&nbsp;&nbsp;(Paid Rental)</small>
+            <small>&nbsp;&nbsp;&nbsp;&nbsp;(Paid Rental)</small>
           {% else %}
-            <small>&nbsp;&nbsp;&nbsp;(Free Stream)</small>
+            <small>&nbsp;&nbsp;&nbsp;&nbsp;(Free Stream)</small>
           {% endif %}
           </li>
-        </ul>
         {% endfor %}
       {% else %}
-        <ul>
           <li>Sorry, there are currently no media links for this film.</li>
-        </ul>
       {% endif %}
+        </ul>
+        <br>
     </div>
 
     <div class="col-lg-6">
