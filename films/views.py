@@ -89,11 +89,11 @@ class MovieList(ListView):
 
         # create a key-value pair for each letter of alphabet, value is query result of movies starting with that letter
         for i in alphabet:
-            sorted_movies[i] = Movie.objects.filter(display_name__istartswith=i)
+            sorted_movies[i] = Movie.objects.filter(display_name__istartswith=i).order_by('display_name')
 
         # get the movies that don't start with a letter
         for i in num_starts:
-            results = Movie.objects.filter(display_name__istartswith=i)
+            results = Movie.objects.filter(display_name__istartswith=i).order_by('name')
             numerics.extend(results)
 
         context['sorted_movies'] = sorted_movies
@@ -573,10 +573,10 @@ def mark_favorite_view(request):
 
         if UserMovieLink.objects.filter(user=user, movie=movie).exists():
             uml_ob = UserMovieLink.objects.get(user=user, movie=movie)
-            message = 'Retrieved existing box object | '
+            message = 'Retrieved existing uml object | '
         else:
             uml_ob = UserMovieLink(user=user, movie=movie)
-            message = 'Created a new box object | '
+            message = 'Created a new uml object | '
 
         # if current state is False, switch it to true, and notify ajax function of this via 'fav' in data
         if not uml_ob.favorite:

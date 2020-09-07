@@ -88,6 +88,25 @@
     <div class="col-lg-4 p-2">
       <h4 class="lead border-bottom">D</h4>
         <ul>
+          {% for movie in sorted_movies.d %}
+            {% if forloop.counter|divisibleby:20 %}
+              </ul>
+              </div>
+              <div class="col-lg-4 p-2">
+              <br>
+              <h4 class="border-bottom mb-1 d-none d-md-block"></h4>
+              <ul>
+            {% endif %}
+              <li><a href="{{ movie.get_absolute_url }}">{{ movie.display_name }}</a></li>
+          {% empty %}
+            <li>No films start with E</li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-lg-4 p-2">
+      <h4 class="lead border-bottom">E</h4>
+        <ul>
           {% for movie in sorted_movies.e %}
             {% if forloop.counter|divisibleby:20 %}
               </ul>
