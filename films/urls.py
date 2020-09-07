@@ -2,7 +2,7 @@
 
 from django.urls import path
 from .views import (IndexPage, MovieList, FreeMoviesList, MovieDetail, PersonList, PersonDetail, SearchResults, WriteReview,
-    DeleteReview, UserDetail, CreateUML, UpdateUML, GetRecommendations, FaqView, contactView, ContactSuccessView, autocomplete_view)
+    DeleteReview, UserDetail, CreateUML, UpdateUML, GetRecommendations, FaqView, contactView, ContactSuccessView, autocomplete_view, mark_seen_view, mark_favorite_view, mark_watch_view)
 
 app_name = 'films'
 urlpatterns = [
@@ -41,6 +41,11 @@ urlpatterns = [
     # one single URL pattern / path for doing any kind of update to UserMovieLink record; captures id of UML object as well as 'action' string
     # the action string is used in the view to determine which action to perform on the object
     path('update_uml/<int:pk>/<action>/', UpdateUML.as_view(), name='update_uml'),
+
+    # new ajax calls for UserMoveLink section of Movie page, replaces _uml paths above
+    path('ajax/mark_seen', mark_seen_view, name='mark_seen'),
+    path('ajax/mark_favorite', mark_favorite_view, name='mark_favorite'),
+    path('ajax/mark_watch', mark_watch_view, name='mark_watch'),
 
     path('recommendations/', GetRecommendations.as_view(), name='get_recommendations'),
 

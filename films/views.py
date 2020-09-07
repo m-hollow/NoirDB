@@ -58,7 +58,7 @@ class IndexPage(TemplateView):
 
         related_movies = daily_movie.get_related_movies()
 
-        free_count = Movie.objects.filter(medialink__free=True).distinct().count() # movies can have more than one free link, distinct avoids duplicates
+        free_count = Movie.objects.filter(medialink__free=True).distinct().count() # movies can have more than one free link, distinct avoids counting duplicates
 
         context['free_count'] = free_count
         context['page_name'] = 'Welcome'
@@ -110,7 +110,7 @@ class FreeMoviesList(ListView):
 
     def get_queryset(self):
         # get only the movies with a free link
-        free_movies = Movie.objects.filter(medialink__free=True)
+        free_movies = Movie.objects.filter(medialink__free=True).distinct() # if a movie has more than one free medialink, it would show up twice without discint() here
         self.count = free_movies.count()
 
         return free_movies
@@ -523,6 +523,113 @@ class UpdateUML(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('films:movie', kwargs={'pk': self.object.movie.id, 'slug': self.object.movie.slug })
+
+
+def mark_seen_view(request):
+
+    data = {'success': False }
+
+    if request.method == 'POST':
+        user = request.user
+        movie_id = request.POST.get('movie_id', None)
+
+        movie = Movie.objects.get(id=movie_id)
+
+        if UserMovieLink.objects.filter(user=user, movie=movie).exists():
+            uml_ob = UserMovieLink.objects.get(user=user, movie=movie)
+            message = 'Retrieved existing uml object | '
+        else:
+            uml_ob = UserMovieLink(user=user, movie=movie)
+            message = 'Created a new uml object | '
+
+        # if current state is False, switch it to true, and notify ajax function of new status via 'seen' in data
+        if not uml_ob.seen:
+            uml_ob.seen = True
+            message += 'Seen now set to True'
+            data['seen'] = True
+        # current state is True, so toggle it to False
+        else:
+            uml_ob.seen = False
+            uml_ob.favorite = False     # do not allow favorite = True for a movie that is not Seen
+            message += 'Seen and Favorite now set to False'
+            data['seen'] = False
+
+        uml_ob.save()
+
+        data['success'] = True
+        data['message'] = message
+
+        return JsonResponse(data)
+
+def mark_favorite_view(request):
+
+    data = {'success': False }
+
+    if request.method == 'POST':
+        user = request.user
+        movie_id = request.POST.get('movie_id', None)
+
+        movie = Movie.objects.get(id=movie_id)
+
+        if UserMovieLink.objects.filter(user=user, movie=movie).exists():
+            uml_ob = UserMovieLink.objects.get(user=user, movie=movie)
+            message = 'Retrieved existing box object | '
+        else:
+            uml_ob = UserMovieLink(user=user, movie=movie)
+            message = 'Created a new box object | '
+
+        # if current state is False, switch it to true, and notify ajax function of this via 'fav' in data
+        if not uml_ob.favorite:
+            uml_ob.seen = True     # if user is turning Fav to True, then make sure Seen is also True
+            uml_ob.favorite = True
+            message += 'Favorite now set to True'
+            data['favorite'] = True
+        else:
+            uml_ob.favorite = False
+            message += 'Favorite now set to False'
+            data['favorite'] = False
+
+        uml_ob.save()
+
+        data['success'] = True
+        data['message'] = message
+
+        return JsonResponse(data)
+
+def mark_watch_view(request):
+
+    data = {'success': False }
+
+    if request.method == 'POST':
+        user = request.user
+        movie_id = request.POST.get('movie_id', None)
+
+        movie = Movie.objects.get(id=movie_id)
+
+        if UserMovieLink.objects.filter(user=user, movie=movie).exists():
+            uml_ob = UserMovieLink.objects.get(user=user, movie=movie)
+            message = 'Retrieved existing uml object | '
+        else:
+            uml_ob = UserMovieLink(user=user, movie=movie)
+            message = 'Created a new uml object | '
+
+        # if current state is False, switch it to true, and notify ajax function of this via 'watch' in data
+        if not uml_ob.watch_list:
+            uml_ob.watch_list = True
+            message += 'Watchlist now set to True'
+            data['watch_list'] = True
+        else:
+            uml_ob.watch_list = False
+            message += 'Watchlist now set to False'
+            data['watch_list'] = False
+
+        uml_ob.save()
+
+        data['success'] = True
+        data['message'] = message
+
+        return JsonResponse(data)
+
 
 
 class GetRecommendations(LoginRequiredMixin, ListView):

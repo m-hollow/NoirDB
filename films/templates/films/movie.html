@@ -120,95 +120,129 @@
     <br>
     <br>
     {% if user.is_authenticated %}
-      <div class="shadow p-3 mb-5 bg-light rounded">
-        <div class="mb-2 border-bottom">
-          <h5>Your details for <i>{{ movie.display_name }}</i></h5>
-        </div>
-        {% if not user_movie_details %}
-          <ul>
-            <li class="mb-2">
-              <form action="{% url 'films:create_uml' movie.id actions.mark_seen %}" method='post'>
-                {% csrf_token %}
-                  <button name='submit' class='btn btn-outline-dark btn-sm'>Mark as Seen</button>
-              </form>
-            </li>
-            <li class="mb-2">
-              <form action="{% url 'films:create_uml' movie.id actions.mark_favorite %}" method='post'>
-                {% csrf_token %}
-                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Favorites</button>
-              </form>
-            </li>
-            <li class="mb-2">
-              <form action="{% url 'films:create_uml' movie.id actions.mark_watch_list %}" method='post'>
-                {% csrf_token %}
-                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Watchlist</button>
-              </form>
-            </li>
-          </ul>
-        {% else %}
-        <ul>
-          {% if user_movie_details.seen %}
-            <li class="mb-2">You've seen this movie, nice!
-              <span class="float-right">
-                <form action="{% url 'films:update_uml' user_movie_details.id actions.unmark_seen %}" method='post'>{% csrf_token %}
-                  <button name='submit' class='btn btn-sm btn-link'><i>Mark Unseen</i></button>
-                </form>
-              </span>
-            </li>
-          {% else %}
-            <li class="mb-2">
-              <form action="{% url 'films:update_uml' user_movie_details.id actions.mark_seen %}" method='post'>
-                {% csrf_token %}
-                  <button name='submit' class='btn btn-outline-dark btn-sm'>Mark as Seen</button>
-              </form>
-            </li>
-          {% endif %}
+    <div class="shadow p-3 mb-2 bg-light rounded">
+      <div class="mb-2 border-bottom">
+        <h5 class="lead">Your details for <i>{{ movie.name|upper }}</i></h5>
+      </div>
 
-          {% if user_movie_details.favorite %}
-            <li class="mb-2">This movie is in your <b>Favorites</b> list.
-             <span class="float-right">
-                <form action="{% url 'films:update_uml' user_movie_details.id actions.unmark_favorite %}" method='post'>{% csrf_token %}
-                  <button name='submit' class='btn btn-sm btn-link'><i>Remove</i></button>
-                </form>
-              </span>
-            </li>
-          {% else %}
-            <li class="mb-2">
-              <form action="{% url 'films:update_uml' user_movie_details.id actions.mark_favorite %}" method='post'>
-                {% csrf_token %}
-                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Favorites</button>
-              </form>
-            </li>
-          {% endif %}
+      <div class="container">
+          {% if user_movie_details %}
+          <div class="row p-1">
+            {% if user_movie_details.seen %}
+            <div class="col-md-1 pl-0">
+              <img id="seen_check" class="checks" src="{% static 'images/check-square-solid.svg' %}">
+            </div>
+            <div class="col">
+              <span class="seen_status">You've seen it, nice!</span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="seen" movie_id="{{ movie.id }}" value="Mark Not Seen">
+            </div>
+            {% else %}
+            <div class="col-md-1 pl-0">
+              <img id="seen_check" class="checks" src="{% static 'images/square-regular.svg' %}">
+            </div>
+            <div class="col">
+              <span class="seen_status">You haven't seen it</span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="seen" movie_id="{{ movie.id }}" value="Mark as Seen">
+            </div>
+            {% endif %}
+          </div>
+          <div class="row p-1">
+            {% if user_movie_details.favorite %}
+            <div class="col-md-1 pl-0">
+              <img id="fav_check" class="checks" src="{% static 'images/check-square-solid.svg' %}">
+            </div>
+            <div class="col">
+              <span class="fav_status">It's in your <b>Favorites</b> list</span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="fav" movie_id="{{ movie.id }}" value="Remove">
+            </div>
+            {% else %}
+            <div class="col-md-1 pl-0">
+              <img id="fav_check" class="checks" src="{% static 'images/square-regular.svg' %}">
+            </div>
+            <div class="col">
+              <span class="fav_status">Not in Favorites list</span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="fav" movie_id="{{ movie.id }}" value="Add to Favorites">
+            </div>
+            {% endif %}
+          </div>
+          <div class="row p-1">
+            {% if user_movie_details.watch_list %}
+            <div class="col-md-1 pl-0">
+              <img id="watch_check" class="checks" src="{% static 'images/check-square-solid.svg' %}">
+            </div>
+            <div class="col">
+              <span class="watch_status">It's in your <b>Watchlist</b></span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="watch" movie_id="{{ movie.id }}" value="Remove">
+            </div>
+            {% else %}
+            <div class="col-md-1 pl-0">
+              <img id="watch_check" class="checks" src="{% static 'images/square-regular.svg' %}">
+            </div>
+            <div class="col">
+              <span class="watch_status">Not in Watchlist</span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="watch" movie_id="{{ movie.id }}" value="Add to Watchlist">
+            </div>
+            {% endif %}
+          </div>
 
-          {% if user_movie_details.watch_list %}
-            <li class="mb-2">This movie is in your <b>Watchlist</b>.
-              <span class="float-right">
-                <form action="{% url 'films:update_uml' user_movie_details.id actions.unmark_watch_list %}" method='post'>{% csrf_token %}
-                  <button name='submit' class='btn btn-sm btn-link'><i>Remove</i></button>
-                </form>
-              </span>
-            </li>
           {% else %}
-            <li class="mb-2">
-              <form action="{% url 'films:update_uml' user_movie_details.id actions.mark_watch_list %}" method='post'>
-                {% csrf_token %}
-                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Watchlist</button>
-              </form>
-            </li>
+          <div class="row p-1">
+            <div class="col-md-1 pl-0">
+              <img id="seen_check" class="checks" src="{% static 'images/square-regular.svg' %}">
+            </div>
+            <div class="col">
+              <span class="seen_status">You haven't seen it</span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="seen" movie_id="{{ movie.id }}" value="Mark Seen">
+            </div>
+          </div>
+          <div class="row p-1">
+            <div class="col-md-1 pl-0">
+              <img id="fav_check" class="checks" src="{% static 'images/square-regular.svg' %}">
+            </div>
+            <div class="col">
+              <span class="fav_status">Not in Favorites list</span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="fav" movie_id="{{ movie.id }}" value="Add to Favorites">
+            </div>
+          </div>
+          <div class="row p-1">
+            <div class="col-md-1 pl-0">
+              <img id="watch_check" class="checks" src="{% static 'images/square-regular.svg' %}">
+            </div>
+            <div class="col">
+              <span class="watch_status">Not in Watchlist</span>
+            </div>
+            <div class="col-md-5">
+              <input type="button" class="btn btn-outline-dark btn-sm btn-block" id="watch" movie_id="{{ movie.id }}" value="Add to Watchlist">
+            </div>
+          </div>
           {% endif %}
-        {% endif %}
-        </ul>
-        </div>
-
+      </div> <!-- ends the container grid -->
+    </div> <!-- ends the shadowed box -->
+    <br>
+    <br>
     {% else %}
       <div class="shadow p-3 mb-5 bg-light rounded">
-        <h5>Register an account, and you will be able to:</h5>
+        <h5>Register a free account to get these features:</h5>
         <ul>
-          <li class="mb-1">Write reviews of movies.</li>
-          <li class="mb-1">Mark movies as 'Seen'.</li>
-          <li class="mb-1">Add movies to your Favorites list.</li>
-          <li class="mb-1">Add movies to your Watch list.</li>
+          <li class="mb-1">Write <b>Reviews</b> of movies</li>
+          <li class="mb-1">Mark movies as 'Seen'</li>
+          <li class="mb-1">Add movies to your <b>Favorites</b> list and <b>Watchlist</b></li>
         </ul>
         <a class="btn btn-outline-dark" href="{% url 'register' %}" role="button">Register &raquo;</a>
       </div>
@@ -260,4 +294,121 @@
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+
+<script>
+
+var squareUrl = "{% static 'images/square-regular.svg' %}";
+var checkSquareUrl = "{% static 'images/check-square-solid.svg' %}";
+
+$('#seen').on("click", function(){
+
+  $.ajax({
+    type: "POST",
+    url: "{% url 'films:mark_seen' %}",
+    data: {
+      'movie_id': $(this).attr('movie_id'),
+      'csrfmiddlewaretoken': '{{ csrf_token }}',
+    },
+    dataType: "json",
+    success: function(response) {
+
+      if (response['success']){
+        //alert(response.message);
+      
+        if (response['seen']){
+          $("#seen").prop("value", "Mark Not Seen");
+          $(".seen_status").html("You've seen it, nice!");  
+          $("#seen_check").attr("src", checkSquareUrl);
+        }
+
+        else {
+          $("#seen").prop("value", "Mark Seen");
+          $(".seen_status").html("You haven't seen it");
+          $("#seen_check").attr("src", squareUrl);
+
+          $(".fav_status").html("Not in Favorites list");
+          $("#fav").prop("value", "Add to Favorites");
+          $("#fav_check").attr("src", squareUrl);
+        }
+      }
+      else {
+        alert('error - the View returned Success: False value')
+      }
+    }
+  });
+});
+
+$('#fav').on("click", function(){
+
+  $.ajax({
+    type: "POST",
+    url: "{% url 'films:mark_favorite' %}",
+    data: {
+      'movie_id': $(this).attr('movie_id'),
+      'csrfmiddlewaretoken': '{{ csrf_token }}',
+    },
+    dataType: "json",
+    success: function(response) {
+      if (response['success']){
+        //alert(response.message);
+      
+        if (response['favorite']){
+          $("#fav").prop("value", "Remove");
+          $("#fav_check").attr("src", checkSquareUrl);
+          $(".fav_status").html("It's in your <b>Favorites</b> list");
+          $(".seen_status").html("You've seen it, nice!");
+          $("#seen").prop("value", "Mark Not Seen");
+          $("#seen_check").attr("src", checkSquareUrl);
+        }
+
+        else {
+          $("#fav").prop("value", "Add to Favorites");
+          $("#fav_check").attr("src", squareUrl);
+          $(".fav_status").html("Not in Favorites list");
+        }
+      }
+      else {
+        alert('error - the View returned Success: False value')
+      }
+    }
+  });
+});
+
+$('#watch').on("click", function(){
+
+  $.ajax({
+    type: "POST",
+    url: "{% url 'films:mark_watch' %}",
+    data: {
+      'movie_id': $(this).attr('movie_id'),
+      'csrfmiddlewaretoken': '{{ csrf_token }}',
+    },
+    dataType: "json",
+    success: function(response) {
+      if (response['success']){
+        //alert(response.message);
+      
+        if (response['watch_list']){
+          $("#watch").prop("value", "Remove");
+          $("#watch_check").attr("src", checkSquareUrl);
+          $(".watch_status").html("It's in your <b>Watchlist</b>");
+        }
+
+        else {
+          $("#watch").prop("value", "Add to Watchlist");
+          $("#watch_check").attr("src", squareUrl);
+          $(".watch_status").html("Not in your Watchlist");
+        }
+      }
+      else {
+        alert('error - the View returned Success: False value')
+      }
+    }
+  });
+});
+
+</script>
+{% endblock javascript %}
 

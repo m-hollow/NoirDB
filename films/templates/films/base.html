@@ -42,7 +42,7 @@
           <a class="nav-link" href="{{ user.get_absolute_url }}">Your Info</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+          <a class="nav-link" href="{% url 'logout' %}?next={{ request.path|urlencode }}">Log out</a>
         </li>
       {% else %}
         <li class="nav-item {% if url_name == 'register' %}active{% endif %}">
@@ -83,6 +83,8 @@
       {% block content %}{% endblock content %}
     </div>
   </main>
+
+  {% block javascript %}{% endblock javascript %}
 
 <!-- load jQuery-UI -->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

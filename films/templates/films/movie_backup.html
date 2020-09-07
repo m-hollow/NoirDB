@@ -1,0 +1,263 @@
+{% extends 'films/base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block page_header %}
+  <h1>{{ movie.display_name }}</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+
+      {% if movie.poster_image %}
+        <figure class="figure">
+          <div class="img_box">
+            <img src="{{ movie.poster_image.url }}" class="figure-img img-fluid" alt="{{ movie.name }}">
+          </div>
+          <figcaption class="figure-caption"><i>Original poster art. Copyright held by studio.</i></figcaption>
+        </figure>
+      {% endif %}
+
+      <ul>
+        <li><b>Year Released:</b> {{ movie.year }}</li>
+        <li><b>Studio:</b> {{ movie.studio }}</li>
+        {% if movie.based_on != 'n/a' %}
+          <li><b>Based On</b> "{{ based_on_list.0 }}" by {{ based_on_list.1 }}</li>
+        {% endif %}
+      </ul>
+      <ul>
+        <li><b># of Reviews:</b> {{ movie.num_reviews }}</li>
+        <li><b>Avg. Rating:</b>
+        {% if movie.avg_rating %}
+          {{ movie.avg_rating }} <small> of 5 stars</small>
+        {% else %}
+          --
+        {% endif %}
+        </li>
+      </ul>
+      <br>
+      <h5>Where to watch <i>{{ movie.display_name }}</i></h5>
+      {% if media_links %}
+        <ul>
+        {% for link in media_links %}
+          <li>Watch at <a href="{{ link.url_link }}">{{ link.host|capfirst }}</a>
+          {% if link.free != True %}
+            <small>&nbsp;&nbsp;&nbsp;&nbsp;(Paid Rental)</small>
+          {% else %}
+            <small>&nbsp;&nbsp;&nbsp;&nbsp;(Free Stream)</small>
+          {% endif %}
+          </li>
+        {% endfor %}
+      {% else %}
+          <li>Sorry, there are currently no media links for this film.</li>
+      {% endif %}
+        </ul>
+        <br>
+    </div>
+
+    <div class="col-lg-6">
+
+        <p class="lead">Crew:</p>
+
+          <uL>
+            <li>Director: <a href="{{ crew_dict.director.get_absolute_url }}"><span class="float-right">{{ crew_dict.director.name }}</span></a></li>
+            <li>Camera: <a href="{{ crew_dict.camera.get_absolute_url }}"><span class="float-right">{{ crew_dict.camera.name }}</span></a></li>
+          {% if crew_dict.composer %}
+            <li>Music By: <a href="{{ crew_dict.composer.get_absolute_url }}">
+            <span class="float-right">{{ crew_dict.composer.name }}</span></a></li>
+          {% else %}
+            <li>Music By: <span class="float-right"><i>none listed</i></span></li>
+          {% endif %}
+
+            <li>Produced By:
+          {% for producer in crew_dict.producers %}
+            <a href="{{ producer.get_absolute_url }}"><span class="float-right">{{ producer.name }}&nbsp;</a>
+          {% empty %}
+            <span class="float-right">None listed.</span>
+          {% endfor %}
+            </li>
+
+            <li>Written By:
+          {% for writer in crew_dict.writers %}
+            <a href="{{ writer.get_absolute_url }}"><span class="float-right"><span class="float-right">{{ writer.name }}&nbsp;</span></a><br>
+          {% empty %}
+            <span class="float-right">None listed.</span>
+          {% endfor %}
+            </li>
+          </uL>
+<!--           {% if crew_dict.writers|length == 1 %}
+            <br>
+          {% endif %} -->
+
+        {% if starring_list %}
+        <p class="lead">Starring:</p>
+          <ul>
+          {% for pair in starring_list %}
+            <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a><span class="float-right">&nbsp;<small><i>
+            as</i></small> {{ pair.1 }}</span></li>
+          {% empty %}
+            <li>No starring credits in this movie</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if not starring_list %}
+        <p class="lead">Cast:</p>
+        {% else %}
+        <p class="lead">With:</p>
+        {% endif %}
+          <ul>
+          {% for pair in cast_list %}
+            <li><a href="{{ pair.0.get_absolute_url }}">{{ pair.0.name }}</a> <span class="float-right">&nbsp;<small><i>as</i></small> {{ pair.1 }}</span></li>
+          {% empty %}
+            <li>No cast credits have been entered for this movie.</li>
+          {% endfor %}
+          </ul>
+
+    <br>
+    <br>
+    {% if user.is_authenticated %}
+      <div class="shadow p-3 mb-5 bg-light rounded">
+        <div class="mb-2 border-bottom">
+          <h5>Your details for <i>{{ movie.display_name }}</i></h5>
+        </div>
+        {% if not user_movie_details %}
+          <ul>
+            <li class="mb-2">
+              <form action="{% url 'films:create_uml' movie.id actions.mark_seen %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Mark as Seen</button>
+              </form>
+            </li>
+            <li class="mb-2">
+              <form action="{% url 'films:create_uml' movie.id actions.mark_favorite %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Favorites</button>
+              </form>
+            </li>
+            <li class="mb-2">
+              <form action="{% url 'films:create_uml' movie.id actions.mark_watch_list %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Watchlist</button>
+              </form>
+            </li>
+          </ul>
+        {% else %}
+        <ul>
+          {% if user_movie_details.seen %}
+            <li class="mb-2">You've seen this movie, nice!
+              <span class="float-right">
+                <form action="{% url 'films:update_uml' user_movie_details.id actions.unmark_seen %}" method='post'>{% csrf_token %}
+                  <button name='submit' class='btn btn-sm btn-link'><i>Mark Unseen</i></button>
+                </form>
+              </span>
+            </li>
+          {% else %}
+            <li class="mb-2">
+              <form action="{% url 'films:update_uml' user_movie_details.id actions.mark_seen %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Mark as Seen</button>
+              </form>
+            </li>
+          {% endif %}
+
+          {% if user_movie_details.favorite %}
+            <li class="mb-2">This movie is in your <b>Favorites</b> list.
+             <span class="float-right">
+                <form action="{% url 'films:update_uml' user_movie_details.id actions.unmark_favorite %}" method='post'>{% csrf_token %}
+                  <button name='submit' class='btn btn-sm btn-link'><i>Remove</i></button>
+                </form>
+              </span>
+            </li>
+          {% else %}
+            <li class="mb-2">
+              <form action="{% url 'films:update_uml' user_movie_details.id actions.mark_favorite %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Favorites</button>
+              </form>
+            </li>
+          {% endif %}
+
+          {% if user_movie_details.watch_list %}
+            <li class="mb-2">This movie is in your <b>Watchlist</b>.
+              <span class="float-right">
+                <form action="{% url 'films:update_uml' user_movie_details.id actions.unmark_watch_list %}" method='post'>{% csrf_token %}
+                  <button name='submit' class='btn btn-sm btn-link'><i>Remove</i></button>
+                </form>
+              </span>
+            </li>
+          {% else %}
+            <li class="mb-2">
+              <form action="{% url 'films:update_uml' user_movie_details.id actions.mark_watch_list %}" method='post'>
+                {% csrf_token %}
+                  <button name='submit' class='btn btn-outline-dark btn-sm'>Add to Watchlist</button>
+              </form>
+            </li>
+          {% endif %}
+        {% endif %}
+        </ul>
+        </div>
+
+    {% else %}
+      <div class="shadow p-3 mb-5 bg-light rounded">
+        <h5>Register an account, and you will be able to:</h5>
+        <ul>
+          <li class="mb-1">Write reviews of movies.</li>
+          <li class="mb-1">Mark movies as 'Seen'.</li>
+          <li class="mb-1">Add movies to your Favorites list.</li>
+          <li class="mb-1">Add movies to your Watch list.</li>
+        </ul>
+        <a class="btn btn-outline-dark" href="{% url 'register' %}" role="button">Register &raquo;</a>
+      </div>
+    {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="container pb-2 mb-2 border-bottom">
+  <div class="row">
+    <div class="col">
+      <h2>User Reviews</h2>
+    </div>
+    <div class="col">
+      {% if user.is_authenticated %}
+        {% if not user_review %}
+          <a class="btn btn-outline-dark" href="{% url 'films:write_review' movie.name %}" role="button">Write Review</a>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  {% for review in reviews %}
+    <div class="card mb-3">
+      <h4 class="card-header">
+        {% with ''|center:review.star_rating as range %}
+          {% for _ in range %}
+            <!-- <i class="fas fa-star fa-sm"></i> -->
+            <img class="star pb-1" src="{% static 'images/star-solid.svg' %}">
+          {% endfor %}
+        {% endwith %}
+        {% with ''|center:review.get_empty_stars as range_two %}
+          {% for _ in range_two %}
+            <!-- <i class="far fa-star fa-sm"></i> -->
+            <img class="star pb-1" src="{% static 'images/star-regular.svg' %}">
+          {% endfor %}
+        {% endwith %}
+        &nbsp;&nbsp;<small>{{ review.date_added|date:'M d, Y' }} by {{ review.user.username }}</small>
+      </h4>
+      <div class="card-body">
+        {{ review.review_text|linebreaks }}
+      </div>
+    </div>
+  {% empty %}
+    <p>There are no reviews for this movie yet. You should write one!</p>
+  {% endfor %}
+</div>
+
+{% endblock content %}
+
