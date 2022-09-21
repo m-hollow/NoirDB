@@ -8,10 +8,14 @@
 
 {% block content %}
 
+  <p class="lead"><i>Note from Admin: the contact form has been disabled due to excessive Spamming. Stay tuned for a new method of getting in touch, thanks!</i></p>
+
   <form role="form" action="" method="post">
+    <fieldset disabled>
     {% csrf_token %}
     {% bootstrap_form form %}
     <button class="btn btn-secondary" type="submit">Send</button>
+    </fieldset>
   </form>
 
 
