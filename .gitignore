@@ -1,6 +1,7 @@
 __pycache__
 *.pyc
 /static
+/staticfiles
 media
 ve_fndb4
 .DS_Store
